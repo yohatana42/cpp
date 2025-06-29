@@ -1,0 +1,26 @@
+#ifndef ZOMBIE_H
+# define ZOMBIE_H
+
+# include <iostream>
+# include <string>
+# include <new>
+
+class Zombie {
+private:
+    std::string  name;
+public:
+    Zombie( std::string name );
+	    //コンストラクタ
+    ~Zombie();
+	    //デストラクタ　**　デストラクタでメッセージを表示する!! **
+    void announce( void );
+	    //メッセージを表示する
+};
+
+Zombie* newZombie( std::string name );
+	//インスタンスを動的に確保し、ポインターを返す
+void    randomChump( std::string name );
+	//インスタンスを静的に確保しメッセージを表示する
+
+#endif
+
