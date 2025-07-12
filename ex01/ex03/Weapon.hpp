@@ -2,6 +2,7 @@
  #define WEAPON_H
 
 #include <string>
+#include <iostream>
 
 class Weapon
 {
