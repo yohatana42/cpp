@@ -6,7 +6,7 @@ HumanB::HumanB(std::string name) : _name(name) {}
 
 HumanB::HumanB(std::string name, Weapon weapon)
 {
-    // weaponはポインタっぽい
+    // weaponはポインタっぽい？
     this->_weapon = weapon;
     this->_name = name;
 }
