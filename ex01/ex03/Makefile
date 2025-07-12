@@ -6,14 +6,16 @@
 #    By: yoshiko <yoshiko@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/07/12 17:44:11 by yoshiko          ###   ########.fr        #
+#    Updated: 2025/07/12 23:11:23 by yoshiko          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = replace
+NAME = attack
 SRCS = \
 		main.cpp\
-		Replace.cpp
+		HumanA.cpp\
+		HumanB.cpp\
+		Weapon.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++
