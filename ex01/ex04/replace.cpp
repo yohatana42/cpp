@@ -18,6 +18,7 @@ std::string Replace::exec_replace(std::string line,
             continue ;
         line.erase(find_spot, before.size());
         line.insert(find_spot, after);
+        i++;
     }
     return (line);
 }
