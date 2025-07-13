@@ -6,15 +6,14 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/06/28 16:53:39 by yohatana         ###   ########.fr        #
+#    Updated: 2025/07/13 18:47:16 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = phonebook
+NAME = fix
 SRCS = \
 		main.cpp\
-		PhoneBook.cpp\
-		Contact.cpp
+		Fixed.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++
