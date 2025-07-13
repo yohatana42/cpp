@@ -7,6 +7,7 @@ int main()
     HumanA bob("Bob", club);
     bob.attack();
     club.setType("some other type of club");
+	std::cout << club.getType() << std::endl;
     bob.attack();
 
     Weapon club2 = Weapon("crude spiked club");
@@ -16,6 +17,6 @@ int main()
     club2.setType("some other type of club");
     jim.attack();
 
-    delete jim;
+    // delete jim;
     return (0);
 }
