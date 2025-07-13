@@ -6,13 +6,28 @@ void PhoneBook::add()
 	{
 		std::cout << "input first name" << std::endl;
 		std::cin >> _f_name;
+		// EOFが来たらもう一度入力させる
+		if (std::cin.eof())
+		{
+			break ;
+		}
 	}
 	std::cout << "input last name" << std::endl;
 	std::cin >> _l_name;
+
+	// cinが失敗したら処理を終了させるべき
+	if(std::cin.fail())
+	{
+		std::cout << "" << std::endl;
+	}
 	while (_l_name.empty())
 	{
 		std::cout << "input last name" << std::endl;
 		std::cin >> _l_name;
+		if (std::cin.eof())
+		{
+			break ;
+		}
 	}
 	if (_n_name.empty())
 	{
@@ -55,24 +70,28 @@ void PhoneBook::search()
 			_l_name = _l_name.substr(0, 9) + ".";
 		if (_n_name.length() > 10)
 			_n_name = _n_name.substr(0, 9) + ".";
-		std::cout << i << "|";
+		std::cout << std::right << i << "|";
 		std::cout << _f_name << "|";
 		std::cout << _l_name << "|";
 		std::cout << _n_name << std::endl;
 		i++;
 	}
-	std::cout << "chose some index" << std::endl;
-	int	index = 0;
-	std::cin >> index;
-	while (index > 7 && this->_contacts[index].get_first_name().empty())
-	{
-		std::cout << "retry" << std::endl;
-		std::cin >> index;
-	}
-	std::cout << this->_contacts[index].get_first_name() << std::endl;
-	std::cout << this->_contacts[index].get_last_name() << std::endl;
-	std::cout << this->_contacts[index].get_nickname() << std::endl;
-	std::cout << this->_contacts[index].get_phone_num() << std::endl;
-	std::cout << this->_contacts[index].get_darkest_secret() << std::endl;
+	// std::cout << "chose some index" << std::endl;
+	// int	index = 0;
+	// std::cin >> index;
+	// while (index > 7 && this->_contacts[index].get_first_name().empty())
+	// {
+	// 	std::cout << "retry" << std::endl;
+	// 	std::cin >> index;
+	// }
+	// std::cout << this->_contacts[index].get_first_name() << std::endl;
+	// std::cout << this->_contacts[index].get_last_name() << std::endl;
+	// std::cout << this->_contacts[index].get_nickname() << std::endl;
+	// std::cout << this->_contacts[index].get_phone_num() << std::endl;
+	// std::cout << this->_contacts[index].get_darkest_secret() << std::endl;
 }
 
+void cin_check()
+{
+	if(std::cin.)
+}

@@ -6,7 +6,7 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/07/08 15:25:05 by yohatana         ###   ########.fr        #
+#    Updated: 2025/06/28 16:53:39 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,11 @@ $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
+	rm -f $(OBJS)
 
 fclean:
-	$(RM) $(OBJS)
-	$(RM) $(NAME)
+	rm -f $(OBJS)
+	rm -f $(NAME)
 
 re: fclean all
 
