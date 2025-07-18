@@ -29,10 +29,10 @@ int main()
 	std::cout << e << std::endl;
 
 	// なんかうまくいかない
-	// if (c == b)
-	// {
-	// 	std::cout << "a is b" << std::endl;
-	// }
+	if (c == b)
+	{
+		std::cout << "a is b" << std::endl;
+	}
 
 	std::cout << Fixed::max( a, b ) << std::endl;
 	return 0;
