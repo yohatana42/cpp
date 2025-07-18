@@ -3,23 +3,31 @@
 Fixed::Fixed()
 {
 	std::cout << "Default constructor called" << std::endl;
+	this->_fix_point = 0;
 }
 
 Fixed::Fixed(const Fixed& src)
 {
-	_fix_point = src._fix_point;
 	std::cout << "Copy constructor called" << std::endl;
+	this->_fix_point = src.getRawBits();
 }
 
+// コピー代入演算子
 Fixed& Fixed::operator=(const Fixed& src)
 {
-	Fixed& fix_ref = src;
- 	std::cout << "Copy assignment operator called" << std::endl;
-	return (fix_ref);
+	std::cout << "Copy assignment operator called" << std::endl;
+	this->_fix_point = src.getRawBits();
+	return (*this);
 }
 
-int Fixed::getRawBits()
+Fixed::~Fixed()
 {
+	std::cout << "Destructor called" << std::endl;
+}
+
+int Fixed::getRawBits() const
+{
+	std::cout << "getRawBits member function called" <<std::endl;
 	return (_fix_point);
 }
 

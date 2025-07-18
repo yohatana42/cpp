@@ -10,7 +10,8 @@ class Fixed
 		Fixed();
 		Fixed(const Fixed& src);
 		Fixed& operator=(const Fixed& c);
-		int getRawBits();
+		~Fixed();
+		int getRawBits() const;
 		void setRawBits(int const raw);
 	private:
 		int _fix_point;
