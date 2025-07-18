@@ -6,12 +6,6 @@ Fixed::Fixed()
 	this->_fix_point = 0;
 }
 
-// １バイト分０が必要なはず
-// ビットシフトでなんとか０埋めする
-// 10が来たら1010(.)00000000に変換する
-// int型に変換する
-// _fix_point = 2560になる
-// 1010.00000000
 Fixed::Fixed(const int num)
 {
 	int temp = num;
