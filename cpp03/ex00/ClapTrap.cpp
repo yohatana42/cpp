@@ -2,6 +2,15 @@
 
 ClapTrap::ClapTrap() {}
 
+ClapTrap::ClapTrap(std::string name)
+{
+    this->_name = name;
+    this->_hit_p = 10;
+    this->_energy_p = 10;
+    this->_attack_d = 0;
+    std::cout << "constructor called" << std::endl;
+}
+
 ClapTrap::ClapTrap(std::string name, 
         int hit_p, 
         int energy_p, 
@@ -43,19 +52,22 @@ void ClapTrap::attack(const std::string& target)
     std::cout << " attacks ";
     std::cout << target;
     std::cout << ", causing ";
-    std::cout << damage;
+    std::cout << this->_attack_d;
     std::cout << "points of damage!" << std::endl;
-
+    this->_energy_p = this->_energy_p - 1;
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-
+    std::cout << "dameged!" << std::endl;
+    this->_hit_p = this->_hit_p - amount;
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-
+    std::cout << "Repaired" << std::endl;
+    this->_hit_p = this->_hit_p + amount;
+    this->_energy_p = this->_energy_p - 1;
 }
 
 std::string ClapTrap::getName() const
