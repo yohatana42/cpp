@@ -47,25 +47,45 @@ ClapTrap::~ClapTrap()
 
 void ClapTrap::attack(const std::string& target)
 {
+    if (this->_hit_p == 0)
+    {
+        std::cout << "no HP..." << std::endl;
+        return ;
+    }
+    if (this->_energy_p == 0)
+    {
+        std::cout << "no energy..." << std::endl;
+        return ;
+    }
     std::cout << "ClapTrap ";
     std::cout << this->_name;
     std::cout << " attacks ";
     std::cout << target;
     std::cout << ", causing ";
     std::cout << this->_attack_d;
-    std::cout << "points of damage!" << std::endl;
+    std::cout << " points of damage!" << std::endl;
     this->_energy_p = this->_energy_p - 1;
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-    std::cout << "dameged!" << std::endl;
+    std::cout << amount <<  "dameged!" << std::endl;
     this->_hit_p = this->_hit_p - amount;
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-    std::cout << "Repaired" << std::endl;
+    if (this->_hit_p == 0)
+    {
+        std::cout << "no HP..." << std::endl;
+        return ;
+    }
+    if (this->_energy_p == 0)
+    {
+        std::cout << "no energy..." << std::endl;
+        return ;
+    }
+    std::cout << amount <<  "Repaired" << std::endl;
     this->_hit_p = this->_hit_p + amount;
     this->_energy_p = this->_energy_p - 1;
 }
