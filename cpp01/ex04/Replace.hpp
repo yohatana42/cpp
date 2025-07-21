@@ -9,8 +9,8 @@ class Replace
 {
     public:
         Replace();
-        std::string exec_replace(std::string line, 
-                            std::string before, 
+        std::string exec_replace(std::string line,
+                            std::string before,
                             std::string after);
     private:
 };
