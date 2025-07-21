@@ -11,9 +11,9 @@ ClapTrap::ClapTrap(std::string name)
     std::cout << "constructor called" << std::endl;
 }
 
-ClapTrap::ClapTrap(std::string name, 
-        int hit_p, 
-        int energy_p, 
+ClapTrap::ClapTrap(std::string name,
+        int hit_p,
+        int energy_p,
         int attack_d)
 {
     this->_name = name;
@@ -69,7 +69,7 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-    std::cout << amount <<  "dameged!" << std::endl;
+    std::cout << amount <<  " dameged!" << std::endl;
     this->_hit_p = this->_hit_p - amount;
 }
 
@@ -85,7 +85,7 @@ void ClapTrap::beRepaired(unsigned int amount)
         std::cout << "no energy..." << std::endl;
         return ;
     }
-    std::cout << amount <<  "Repaired" << std::endl;
+    std::cout << amount <<  " Repaired" << std::endl;
     this->_hit_p = this->_hit_p + amount;
     this->_energy_p = this->_energy_p - 1;
 }

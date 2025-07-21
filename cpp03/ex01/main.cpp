@@ -1,11 +1,13 @@
 # include "ClapTrap.hpp"
+# include "ScavTrap.hpp"
 
 int main()
 {
-    ClapTrap player("player");
+    ScavTrap player("player");
+	ScavTrap enemy("enemy");
 
     std::cout << "hp :" << player.getHP() << std::endl;
-    player.attack("enemy");
+    player.attack(&enemy);
     player.takeDamage(9);
     std::cout << "hp :" << player.getHP() << std::endl;
     player.beRepaired(1);
