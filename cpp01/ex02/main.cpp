@@ -9,7 +9,7 @@ int main()
 
 	// memory address
 	std::cout << &str << std::endl;
-	std::cout << &stringPTR << std::endl;
+	std::cout << stringPTR << std::endl;
 	std::cout << &stringREF << std::endl;
 	// value
 	std::cout << str << std::endl;
