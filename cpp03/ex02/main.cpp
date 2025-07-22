@@ -1,10 +1,11 @@
 # include "ClapTrap.hpp"
 # include "ScavTrap.hpp"
+# include "FragTrap.hpp"
 
 int main()
 {
-    ScavTrap player("player");
-	ScavTrap enemy("enemy");
+    FragTrap player("player");
+	FragTrap enemy("enemy");
 
     std::cout << "player hp :" << player.getHP() << std::endl;
 	std::cout << "enemy hp :" << enemy.getHP() << std::endl;
@@ -16,7 +17,6 @@ int main()
     enemy.beRepaired(1);
     std::cout << "player hp :" << player.getHP() << std::endl;
     std::cout << "enemy hp :" << enemy.getHP() << std::endl;
-	player.guardGate();
 	for (int i=0; i < 5; i++)
 		player.attack(&enemy);
 	std::cout << "player hp :" << player.getHP() << std::endl;
