@@ -11,18 +11,6 @@ ClapTrap::ClapTrap(std::string name)
     std::cout << "constructor called" << std::endl;
 }
 
-ClapTrap::ClapTrap(std::string name,
-        int hit_p,
-        int energy_p,
-        int attack_d)
-{
-    this->_name = name;
-    this->_hit_p = hit_p;
-    this->_energy_p = energy_p;
-    this->_attack_d = attack_d;
-    std::cout << "constructor called" << std::endl;
-}
-
 ClapTrap::ClapTrap(const ClapTrap& src)
 {
     this->_name = src.getName();
@@ -69,8 +57,13 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
+	int temp = this->_hit_p - amount;
+
     std::cout << amount <<  " dameged!" << std::endl;
-    this->_hit_p = this->_hit_p - amount;
+	if (temp <= 0)
+		this->_hit_p = 0;
+	else
+		this->_hit_p = this->_hit_p - amount;
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
@@ -95,17 +88,17 @@ std::string ClapTrap::getName() const
     return (this->_name);
 }
 
-int ClapTrap::getHP() const
+unsigned int ClapTrap::getHP() const
 {
     return (this->_hit_p);
 }
 
-int ClapTrap::getEP() const
+unsigned int ClapTrap::getEP() const
 {
     return (this->_energy_p);
 }
 
-int ClapTrap::getAD() const
+unsigned int ClapTrap::getAD() const
 {
     return (this->_attack_d);
 }

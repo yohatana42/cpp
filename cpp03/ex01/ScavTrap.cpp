@@ -32,6 +32,21 @@ ScavTrap::~ScavTrap() {}
 
 void ScavTrap::attack(ScavTrap *enemy)
 {
+	if (enemy->getHP() == 0)
+	{
+		std::cout << enemy->getName() + " is died" << std::endl;
+		return ;
+	}
+	if (_hit_p == 0)
+	{
+		std::cout << _name + " is no HP" << std::endl;
+		return ;
+	}
+	if (_energy_p == 0)
+	{
+		std::cout << _name + " is no EP" << std::endl;
+		return ;
+	}
 	std::cout << _name + " ATTACK " + enemy->getName() << std::endl;
 	enemy->takeDamage(_attack_d);
 }
