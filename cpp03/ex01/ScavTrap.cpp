@@ -33,13 +33,8 @@ ScavTrap::~ScavTrap()
 	std::cout << "ScavTrap destructor called" << std::endl;
 }
 
-void ScavTrap::attack(ScavTrap *enemy)
+void ScavTrap::attack(const std::string& target)
 {
-	if (enemy->getHP() == 0)
-	{
-		std::cout << enemy->getName() + " is died" << std::endl;
-		return ;
-	}
 	if (_hit_p == 0)
 	{
 		std::cout << _name + " is no HP" << std::endl;
@@ -50,8 +45,7 @@ void ScavTrap::attack(ScavTrap *enemy)
 		std::cout << _name + " is no EP" << std::endl;
 		return ;
 	}
-	std::cout << _name + " ATTACK " + enemy->getName() << std::endl;
-	enemy->takeDamage(_attack_d);
+	std::cout << _name + " ATTACK " + target << std::endl;
 }
 
 void ScavTrap::guardGate()

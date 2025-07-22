@@ -2,7 +2,7 @@
 
 FragTrap::FragTrap() {}
 
-FragTrap::FragTrap(std::string name) : ScavTrap(name)
+FragTrap::FragTrap(std::string name) : ClapTrap(name)
 {
 	_name = name;
 	_hit_p = 100;
@@ -33,7 +33,7 @@ FragTrap::~FragTrap()
 	std::cout << "FragTrap destructor called" << std::endl;
 }
 
-void highFivesGuys()
+void FragTrap::highFivesGuys()
 {
 	std::cout << "highFivesGuys!" << std::endl;
 }
