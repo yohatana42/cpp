@@ -11,18 +11,6 @@ ClapTrap::ClapTrap(std::string name)
     std::cout << "constructor called" << std::endl;
 }
 
-ClapTrap::ClapTrap(std::string name, 
-        int hit_p, 
-        int energy_p, 
-        int attack_d)
-{
-    this->_name = name;
-    this->_hit_p = hit_p;
-    this->_energy_p = energy_p;
-    this->_attack_d = attack_d;
-    std::cout << "constructor called" << std::endl;
-}
-
 ClapTrap::ClapTrap(const ClapTrap& src)
 {
     this->_name = src.getName();

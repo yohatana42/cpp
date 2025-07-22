@@ -9,10 +9,6 @@ class ClapTrap
     public:
         ClapTrap();
         ClapTrap(std::string name);
-        ClapTrap(std::string name, 
-                int hit_p, 
-                int energy_p, 
-                int attack_d);
         ClapTrap(const ClapTrap& src);
         ClapTrap& operator=(const ClapTrap& c);
         ~ClapTrap();
