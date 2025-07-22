@@ -28,7 +28,20 @@ int main()
 	std::cout << d << std::endl;
 	std::cout << e << std::endl;
 
+	// 実装したやつ全部書いとく
 	if (c < b)
+		std::cout << "c < b" << std::endl;
+	else
+		std::cout << "c > b" << std::endl;
+	if (c > b)
+		std::cout << "c > b" << std::endl;
+	else
+		std::cout << "c < b" << std::endl;
+	if (c >= b)
+		std::cout << "c >= b" << std::endl;
+	else
+		std::cout << "c < b" << std::endl;
+	if (c <= b)
 		std::cout << "c < b" << std::endl;
 	else
 		std::cout << "c > b" << std::endl;
@@ -43,5 +56,6 @@ int main()
 		std::cout << "c is b" << std::endl;
 
 	std::cout << Fixed::max( a, b ) << std::endl;
+	std::cout << Fixed::min( a, b ) << std::endl;
 	return 0;
 }
