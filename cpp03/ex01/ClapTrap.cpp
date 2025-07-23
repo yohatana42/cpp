@@ -8,7 +8,7 @@ ClapTrap::ClapTrap(std::string name)
     this->_hit_p = 10;
     this->_energy_p = 10;
     this->_attack_d = 0;
-    std::cout << "constructor called" << std::endl;
+    std::cout << "ClapTrap constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap& src)

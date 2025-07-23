@@ -9,9 +9,9 @@ int main()
     std::cout << "player hp :" << player.getHP() << std::endl;
     player.beRepaired(1);
     std::cout << "player hp :" << player.getHP() << std::endl;
+	player.takeDamage(2);
+	std::cout << "player hp :" << player.getHP() << std::endl;
 	player.guardGate();
-	for (int i=0; i < 5; i++)
-		player.attack("enemy");
 	std::cout << "player hp :" << player.getHP() << std::endl;
     return (0);
 }

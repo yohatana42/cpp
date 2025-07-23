@@ -8,7 +8,7 @@ ClapTrap::ClapTrap(std::string name)
     this->_hit_p = 10;
     this->_energy_p = 10;
     this->_attack_d = 0;
-    std::cout << "constructor called" << std::endl;
+    std::cout << "ClapTrap constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap& src)
@@ -30,7 +30,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap& src)
 
 ClapTrap::~ClapTrap()
 {
-    std::cout << "destructor called" << std::endl;
+    std::cout << "ClapTrap destructor called" << std::endl;
 }
 
 void ClapTrap::attack(const std::string& target)
@@ -57,7 +57,7 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-    std::cout << amount <<  "dameged!" << std::endl;
+    std::cout << amount <<  " dameged!" << std::endl;
     this->_hit_p = this->_hit_p - amount;
 }
 
@@ -73,7 +73,7 @@ void ClapTrap::beRepaired(unsigned int amount)
         std::cout << "no energy..." << std::endl;
         return ;
     }
-    std::cout << amount <<  "Repaired" << std::endl;
+    std::cout << amount <<  " Repaired" << std::endl;
     this->_hit_p = this->_hit_p + amount;
     this->_energy_p = this->_energy_p - 1;
 }
