@@ -11,7 +11,7 @@ Cat::Cat(const Cat& src)
 {
 	_type = src.getType();
 	for (int i = 0;i < 100; i++)
-		_brain[i] = src.getBrain()->_ideas[i];
+		_brain->_ideas[i] = src.getBrain()->_ideas[i];
 }
 
 Cat& Cat::operator=(const Cat& src)
