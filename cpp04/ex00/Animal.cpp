@@ -22,12 +22,12 @@ Animal::~Animal()
 	std::cout << "Animal destructor called" << std::endl;
 }
 
-void Animal::makeSound()
+void Animal::makeSound() const
 {
 	std::cout << "OOOOONNN" << std::endl;
 }
 
-std::string Animal::getType()
+std::string Animal::getType() const
 {
 	return (_type);
 }
