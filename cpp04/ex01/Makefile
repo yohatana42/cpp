@@ -6,7 +6,7 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/07/23 14:36:13 by yohatana         ###   ########.fr        #
+#    Updated: 2025/07/26 12:31:07 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS = \
 		Cat.cpp\
 		Dog.cpp\
 		WrongAnimal.cpp\
-		WrongCat.cpp
+		WrongCat.cpp\
+		Brain.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++

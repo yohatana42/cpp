@@ -3,20 +3,21 @@
 Cat::Cat()
 {
 	_type = "Cat";
-	_brain = new Brain();
 	std::cout << "cat constructor called" << std::endl;
+	_brain = new Brain();
 }
 
 Cat::Cat(const Cat& src)
 {
 	_type = src.getType();
-	for (int i = 0;i < 100; i++)
-		_brain->_ideas[i] = src.getBrain()->_ideas[i];
+	// deep copy
+	_brain = new Brain(*src.getBrain());
 }
 
 Cat& Cat::operator=(const Cat& src)
 {
 	_type = src.getType();
+	_brain = new Brain(*src.getBrain());
 	return (*this);
 }
 
