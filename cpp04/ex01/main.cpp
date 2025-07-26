@@ -9,29 +9,14 @@ int main()
 	std::cout << "=== constructor ===" << std::endl;
 	for (int i = 0; i < n;i++)
 	{
+		std::cout << "createing #";
+		std::cout << i << std::endl;
 		if (i < n / 2)
 			metas[i] = new Dog();
 		else
 			metas[i] = new Cat();
+		std::cout << std::endl;
 	}
-
-	// deep copy の証明をする
-	// std::cout << "--- deep copy zone ---" << std::endl;
-	// for (int i = 0; i < n;i++)
-	// {
-	// 	if (i < 2/n)
-	// 	{
-	// 		Dog *dog = dynamic_cast<Dog*>(metas[i]); // セグフォする
-	// 		std::cout << dog->getBrain()->get_ideas()[0] << std::endl;
-	// 		delete dog;
-	// 	}
-	// 	else
-	// 	{
-	// 		Cat *cat = dynamic_cast<Cat*>(metas[i]);
-	// 		std::cout << cat->getBrain()->get_ideas()[0] << std::endl;
-	// 		delete cat;
-	// 	}
-	// }
 
 	std::cout << "=== destructor ===" << std::endl;
 	for (int i = 0; i < n;i++)
