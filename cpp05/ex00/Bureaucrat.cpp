@@ -45,6 +45,38 @@ unsigned int Bureaucrat::getGrade() const
 	return _grade;
 }
 
+void Bureaucrat::add_grade()
+{
+	_grade++;
+	try
+	{
+		if (_grade < 1 || 150 < _grade)
+		{
+			throw GradeException();
+		}
+	}
+	catch (const GradeException& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+}
+
+void Bureaucrat::remove_grade()
+{
+	_grade--;
+	try
+	{
+		if (_grade < 1 || 150 < _grade)
+		{
+			throw GradeException();
+		}
+	}
+	catch (const GradeException& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+}
+
 std::string Bureaucrat::print() const
 {
 	std::stringstream ss;
