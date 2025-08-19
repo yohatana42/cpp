@@ -3,10 +3,34 @@
 
  #include <string>
  #include <iostream>
+ #include <exception>
+ #include <sstream>
 
 class Bureaucrat
 {
+	class GradeException : public std::exception
+	{
+		public:
+			const char* what() const throw()
+			{
+				return ("out of range");
+			}
+	};
 
+	public:
+		Bureaucrat(std::string name, unsigned int grade);
+		Bureaucrat(const Bureaucrat& src);
+		Bureaucrat& operator=(const Bureaucrat& src);
+		~Bureaucrat();
+		std::string getName() const;
+		unsigned int getGrade() const;
+		std::string print() const;
+	private:
+		Bureaucrat();
+		const std::string _name;
+		unsigned int _grade;
 };
+
+std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat);
 
 #endif
