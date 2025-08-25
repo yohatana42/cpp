@@ -5,15 +5,27 @@
  #include <iostream>
  #include <exception>
  #include <sstream>
+ #include "Form.hpp"
+
+class Form;
 
 class Bureaucrat
 {
-	class GradeException : public std::exception
+	class GradeTooHighException : public std::exception
 	{
 		public:
 			const char* what() const throw()
 			{
-				return ("out of range");
+				return ("grade too high");
+			}
+	};
+
+	class GradeTooLowException : public std::exception
+	{
+		public:
+			const char* what() const throw()
+			{
+				return ("grade too low");
 			}
 	};
 
@@ -24,7 +36,10 @@ class Bureaucrat
 		~Bureaucrat();
 		std::string getName() const;
 		unsigned int getGrade() const;
+		void add_grade();
+		void remove_grade();
 		std::string print() const;
+		void signForm(Form& form);
 	private:
 		Bureaucrat();
 		const std::string _name;
