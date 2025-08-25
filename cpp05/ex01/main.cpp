@@ -11,10 +11,14 @@ int main()
 	Bureaucrat bur2("c", 42);
 	std::cout << bur2 << std::endl;
 
+	Bureaucrat bur3("d", 9);
+	std::cout << bur3 << std::endl;
+
 	Form form("form1", 10 ,20);
 	std::cout << form << std::endl;
 
 	bur2.signForm(form);
+	bur3.signForm(form);
 
 	return (0);
 }

@@ -66,14 +66,15 @@ int Form::getConstToExec() const
 
 std::string Form::print_info() const
 {
-	std::string str = "test";
+	std::stringstream ss;
 
-	// // intをstring型にする
-	// str = "name:" + _name
-	// 	+ " const_to_exec:" + _const_to_exec
-	// 	+ " const_to_sign" + _const_to_sign
-	// 	+ " is_signed" + _is_signed;
-	return (str);
+	ss << "name:" + _name + " const_to_exec:";
+	ss << _const_to_exec;
+	ss << " const_to_sign:";
+	ss << _const_to_sign;
+	ss << " is_signed:";
+	ss << _is_signed;
+	return (ss.str());
 }
 
 std::ostream& operator<<(std::ostream& os, const Form& form)
