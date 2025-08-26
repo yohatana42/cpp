@@ -1,5 +1,5 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
@@ -17,10 +17,22 @@ int main()
 	Bureaucrat bur3("d", 9);
 	std::cout << bur3 << std::endl;
 
-	AForm *scf = new ShrubberyCreationForm("");
-	AForm *rrf = new RobotomyRequestForm("");
-	AForm *ppf = new PresidentialPardonForm("");
-	bur3.executeForm(*scf);
+	// ShrubberyCreationForm tests
+	AForm *scf = new ShrubberyCreationForm("aaaaa");
+	try
+	{
+		bur3.signForm(*scf);
+		bur3.executeForm(*scf);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
+	// AForm *rrf = new RobotomyRequestForm("bbbbb");
+	// AForm *ppf = new PresidentialPardonForm("cccc");
+	// bur3.executeForm(*rrf);
+	// bur3.executeForm(*ppf);
 
 	return (0);
 }

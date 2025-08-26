@@ -109,14 +109,8 @@ void Bureaucrat::signForm(AForm& form)
 
 void Bureaucrat::executeForm(const AForm& form) const
 {
-	// try
-	// {
-	// 	form.execute(*this);
-	// }
-	// catch ()
-	// {
+	form.execute(*this);
 
-	// }
 }
 
 std::string Bureaucrat::print() const

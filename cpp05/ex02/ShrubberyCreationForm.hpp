@@ -2,6 +2,7 @@
  #define SCF_HPP
 
  #include "AForm.hpp"
+ #include <fstream>
 
 class ShrubberyCreationForm : public AForm
 {
@@ -11,12 +12,13 @@ class ShrubberyCreationForm : public AForm
 		ShrubberyCreationForm(const ShrubberyCreationForm& src);
 		ShrubberyCreationForm& operator=(const ShrubberyCreationForm& src);
 		~ShrubberyCreationForm();
-		void execute(Bureaucrat const & executor) const;
+		void execute(const Bureaucrat& executor) const;
 	private :
 		const std::string _name;
 		bool _is_signed;
 		const int _const_to_sign;
 		const int _const_to_exec;
+		std::string _target;
 };
 
 

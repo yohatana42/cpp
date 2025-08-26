@@ -18,6 +18,7 @@ class PresidentialPardonForm : public AForm
 		bool _is_signed;
 		const int _const_to_sign;
 		const int _const_to_exec;
+		std::string _target;
 };
 
 #endif
