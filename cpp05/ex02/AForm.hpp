@@ -47,6 +47,7 @@ class AForm
 		bool _is_signed;
 		const int _const_to_sign;
 		const int _const_to_exec;
+
 };
 
 std::ostream& operator<<(std::ostream& os, const AForm& form);
