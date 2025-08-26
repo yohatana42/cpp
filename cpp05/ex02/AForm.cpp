@@ -13,12 +13,12 @@ AForm::AForm(std::string name, const int exec, const int sign) : _name(name), _c
 
 AForm::AForm(const AForm& src) :  _name(src.getName()),_const_to_sign(src.getConstToSign()), _const_to_exec(src.getConstToExec())
 {
-	_is_signed = false;
+	_is_signed = src.getIsSigned();
 }
 
 AForm& AForm::operator=(const AForm& src)
 {
-	this->_is_signed = src.getIsSigned();
+	_is_signed = src.getIsSigned();
 	return (*this);
 }
 

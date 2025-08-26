@@ -13,7 +13,7 @@ class RobotomyRequestForm : public AForm
 		RobotomyRequestForm(const RobotomyRequestForm& src);
 		RobotomyRequestForm& operator=(const RobotomyRequestForm& src);
 		~RobotomyRequestForm();
-		void execute(const Bureaucrat& executor) const;
+		void execute(Bureaucrat const & executor) const;
 	private :
 		const std::string _name;
 		bool _is_signed;

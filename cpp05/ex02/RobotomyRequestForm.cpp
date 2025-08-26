@@ -28,6 +28,7 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 	(void)executor;
 	(void)_const_to_sign;
 	(void)_const_to_exec;
+	std::cout << "execute is sign" << _is_signed << std::endl;
 	if (_is_signed)
 		std::cout << "rat tat tat" << std::endl;
 	else

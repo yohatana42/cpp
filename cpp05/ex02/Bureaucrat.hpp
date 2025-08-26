@@ -40,7 +40,7 @@ class Bureaucrat
 		void remove_grade();
 		std::string print() const;
 		void signForm(AForm& form);
-		void executeForm(const AForm& form) const;
+		void executeForm(AForm const & form) const;
 	private:
 		Bureaucrat();
 		const std::string _name;

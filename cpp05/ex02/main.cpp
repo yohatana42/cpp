@@ -18,11 +18,16 @@ int main()
 	std::cout << bur3 << std::endl;
 
 	// ShrubberyCreationForm tests
-	AForm *scf = new ShrubberyCreationForm("aaaaa");
+	// AForm *scf = new ShrubberyCreationForm("aaaaa");
+
+	ShrubberyCreationForm scf("SCF");
 	try
 	{
-		bur3.signForm(*scf);
-		bur3.executeForm(*scf);
+		std::cout << scf << std::endl;
+		bur3.signForm(scf);
+		std::cout << "1; scf is signed : " << scf.getIsSigned() << std::endl;
+		std::cout << "1; scf point : " << scf << std::endl;
+		bur3.executeForm(scf);
 	}
 	catch(const std::exception& e)
 	{
