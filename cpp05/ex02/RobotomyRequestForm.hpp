@@ -3,6 +3,8 @@
 
 #include "AForm.hpp"
 
+class AForm;
+
 class RobotomyRequestForm : public AForm
 {
 	public:

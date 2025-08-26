@@ -33,14 +33,14 @@ class AForm
 		AForm(std::string name, const int exec, const int sign);
 		AForm(const AForm& src);
 		AForm& operator=(const AForm& src);
-		~AForm();
+		virtual ~AForm();
 		bool beSigned(Bureaucrat& bur);
 		std::string print_info() const;
 		std::string getName() const;
 		bool getIsSigned() const;
 		int getConstToSign() const;
 		int getConstToExec() const;
-		virtual void execute(Bureaucrat const & executor) const;
+		virtual void execute(Bureaucrat const & executor) const = 0;
 
 	private:
 		const std::string _name;
