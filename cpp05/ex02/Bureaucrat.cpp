@@ -110,8 +110,8 @@ void Bureaucrat::signForm(AForm& form)
 void Bureaucrat::executeForm(AForm const & form) const
 {
 
-	form.execute(*this);
-	std::cout << _name << " executed " << form.getName() << std::endl;
+	if (form.execute(*this))
+		std::cout << _name << " executed " << form.getName() << std::endl;
 }
 
 std::string Bureaucrat::print() const

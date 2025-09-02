@@ -14,7 +14,7 @@ class ShrubberyCreationForm : public AForm
 		ShrubberyCreationForm(const ShrubberyCreationForm& src);
 		ShrubberyCreationForm& operator=(const ShrubberyCreationForm& src);
 		~ShrubberyCreationForm();
-		void execute(Bureaucrat const & executor) const;
+		bool execute(Bureaucrat const & executor) const;
 	private :
 		std::string _target;
 };

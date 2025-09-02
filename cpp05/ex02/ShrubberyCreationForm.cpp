@@ -20,8 +20,9 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
-void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
+bool ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
+	(void)executor;
 	if (getIsSigned())
 	{
 		std::ofstream strm;
@@ -31,8 +32,9 @@ void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 		strm.open(filename.c_str());
 		strm << "trees!" << std::endl;
 		strm.close();
+		return (true);
 	}
 	else
-		std::cerr << getName() << " is NOT signed" << std::endl;
-	(void)executor;
+	std::cerr << getName() << " is NOT signed" << std::endl;
+	return (false);
 }

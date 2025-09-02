@@ -20,11 +20,14 @@ PresidentialPardonForm& PresidentialPardonForm::operator=(const PresidentialPard
 
 PresidentialPardonForm::~PresidentialPardonForm() {}
 
-void PresidentialPardonForm::execute(Bureaucrat const & executor) const
+bool PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
 	(void)executor;
 	if (getIsSigned())
+	{
 		std::cout << _target << " has been pardoned by Zaphod Beeblebrox" << std::endl;
-	else
-		std::cerr << getName() << " is NOT signed" << std::endl;
+		return (true);
+	}
+	std::cerr << getName() << " is NOT signed" << std::endl;
+	return (false);
 }

@@ -40,7 +40,7 @@ class AForm
 		bool getIsSigned() const;
 		int getConstToSign() const;
 		int getConstToExec() const;
-		virtual void execute(Bureaucrat const & executor) const = 0;
+		virtual bool execute(Bureaucrat const & executor) const = 0;
 
 	private:
 		const std::string _name;

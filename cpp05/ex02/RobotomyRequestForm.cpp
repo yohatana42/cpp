@@ -20,11 +20,14 @@ RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& s
 
 RobotomyRequestForm::~RobotomyRequestForm() {}
 
-void RobotomyRequestForm::execute(Bureaucrat const & executor) const
+bool RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
 	(void)executor;
 	if (getIsSigned())
+	{
 		std::cout << "rat tat tat" << std::endl;
-	else
-		std::cerr << getName() << " is NOT signed" << std::endl;
+		return (true);
+	}
+	std::cerr << getName() << " is NOT signed" << std::endl;
+	return (false);
 }
