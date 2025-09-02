@@ -94,17 +94,10 @@ void Bureaucrat::remove_grade()
 
 void Bureaucrat::signForm(AForm& form)
 {
-
-	std::cout << "===== signForm() =====" << std::endl;
-	std::cout << "is sign : " << form.getIsSigned() << std::endl;
-	std::cout << "to sign : " << form.getConstToSign() << std::endl;
-	std::cout << "to exec : " << form.getConstToExec() << std::endl;
-
 	try
 	{
 		if (form.beSigned(*this))
 			std::cout << _name << " signed " << form.getName() << std::endl;
-		std::cout << "is sign : " << form.getIsSigned() << std::endl;
 	}
 	catch(const std::exception& e)
 	{
@@ -116,14 +109,8 @@ void Bureaucrat::signForm(AForm& form)
 
 void Bureaucrat::executeForm(AForm const & form) const
 {
-	std::cout << "2; form "<< form << std::endl;
-	std::cout << "2; is sign "<< form.getIsSigned() << std::endl;
-	std::cout << "2; name "<< form.getName() << std::endl;
-	std::cout << "2; exec "<< form.getConstToExec() << std::endl;
-	std::cout << "2; sign "<< form.getConstToSign() << std::endl;
+
 	form.execute(*this);
-	std::cout << "====" << std::endl;
-	std::cout << "3; " << form.getIsSigned() << std::endl;
 	std::cout << _name << " executed " << form.getName() << std::endl;
 }
 

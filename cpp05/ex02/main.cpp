@@ -17,13 +17,9 @@ int main()
 	Bureaucrat bur3("d", 9);
 	std::cout << bur3 << std::endl;
 
-	// ShrubberyCreationForm tests
-	// AForm *scf = new ShrubberyCreationForm("aaaaa");
-
 	ShrubberyCreationForm scf("SCF");
 	try
 	{
-		std::cout << scf << std::endl;
 		bur3.signForm(scf);
 		bur3.executeForm(scf);
 	}
@@ -32,12 +28,14 @@ int main()
 		std::cerr << e.what() << '\n';
 	}
 
-	AForm *rrf = new RobotomyRequestForm("bbbbb");
-	AForm *ppf = new PresidentialPardonForm("cccc");
+	RobotomyRequestForm rrf("bbbbb");
+	PresidentialPardonForm ppf("cccc");
 	try
 	{
-	bur3.executeForm(*rrf);
-	bur3.executeForm(*ppf);
+		bur3.signForm(rrf);
+		bur3.executeForm(rrf);
+		bur3.signForm(ppf);
+		bur3.executeForm(ppf);
 	}
 	catch(const std::exception& e)
 	{
