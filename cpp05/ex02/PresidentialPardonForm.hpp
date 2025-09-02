@@ -16,10 +16,6 @@ class PresidentialPardonForm : public AForm
 		~PresidentialPardonForm();
 		void execute(Bureaucrat const & executor) const;
 	private :
-		// const std::string _name;
-		// bool _is_signed;
-		// const int _const_to_sign;
-		// const int _const_to_exec;
 		std::string _target;
 };
 

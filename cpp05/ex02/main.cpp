@@ -25,8 +25,6 @@ int main()
 	{
 		std::cout << scf << std::endl;
 		bur3.signForm(scf);
-		std::cout << "1; scf is signed : " << scf.getIsSigned() << std::endl;
-		std::cout << "1; scf point : " << scf << std::endl;
 		bur3.executeForm(scf);
 	}
 	catch(const std::exception& e)
@@ -34,10 +32,17 @@ int main()
 		std::cerr << e.what() << '\n';
 	}
 
-	// AForm *rrf = new RobotomyRequestForm("bbbbb");
-	// AForm *ppf = new PresidentialPardonForm("cccc");
-	// bur3.executeForm(*rrf);
-	// bur3.executeForm(*ppf);
+	AForm *rrf = new RobotomyRequestForm("bbbbb");
+	AForm *ppf = new PresidentialPardonForm("cccc");
+	try
+	{
+	bur3.executeForm(*rrf);
+	bur3.executeForm(*ppf);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
 	return (0);
 }
