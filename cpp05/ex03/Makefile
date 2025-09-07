@@ -6,18 +6,19 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/08/26 14:47:43 by yohatana         ###   ########.fr        #
+#    Updated: 2025/09/07 14:24:50 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ex02
+NAME = ex03
 SRCS = \
 		main.cpp\
 		Bureaucrat.cpp\
 		AForm.cpp\
 		PresidentialPardonForm.cpp\
 		RobotomyRequestForm.cpp\
-		ShrubberyCreationForm.cpp
+		ShrubberyCreationForm.cpp\
+		Intern.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

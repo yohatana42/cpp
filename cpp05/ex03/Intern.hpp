@@ -1,9 +1,12 @@
 #ifndef INTERN_HPP
  #define INTERN_HPP
 
- #include "AForm.hpp"
+ #include "RobotomyRequestForm.hpp"
+ #include "PresidentialPardonForm.hpp"
+ #include "ShrubberyCreationForm.hpp"
  #include <string>
  #include <iostream>
+ #include <map>
 
 class Intern
 {
@@ -14,6 +17,12 @@ class Intern
 		~Intern();
 		AForm *makeForm(std::string name, std::string target);
 	private:
+		typedef AForm* (*_formFunc)(std::string);
+		std::map<std::string, _formFunc> func;
 };
+
+	AForm* createPresidentialPardonForm(std::string target);
+	AForm* createRobotomyRequestForm(std::string target);
+	AForm* createShrubberyCreationForm(std::string target);
 
 #endif

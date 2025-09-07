@@ -28,7 +28,7 @@ bool AForm::beSigned(Bureaucrat& bur)
 {
 	try
 	{
-		if (_const_to_exec > (int)bur.getGrade())
+		if (_const_to_sign >= (int)bur.getGrade())
 		{
 			_is_signed = true;
 			return (true);

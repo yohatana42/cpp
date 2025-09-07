@@ -22,12 +22,12 @@ PresidentialPardonForm::~PresidentialPardonForm() {}
 
 bool PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
-	(void)executor;
-	if (getIsSigned())
+	if ((unsigned int)getConstToExec() < executor.getGrade())
+		throw AForm::GradeTooLowException();
+	if (!getIsSigned())
 	{
-		std::cout << _target << " has been pardoned by Zaphod Beeblebrox" << std::endl;
-		return (true);
+		throw std::runtime_error("is NOT signed");
 	}
-	std::cerr << getName() << " is NOT signed" << std::endl;
-	return (false);
+	std::cout << _target << " has been pardoned by Zaphod Beeblebrox" << std::endl;
+	return (true);
 }

@@ -3,74 +3,44 @@
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
+#include "Intern.hpp"
 
 int main()
 {
-	// exception
-	Bureaucrat bur("a", 0);
-	Bureaucrat bur1("b", 151);
+	Intern intern;
+	AForm* rrf;
+	AForm* ppf;
+	AForm* scf;
+	AForm *noexist;
+	Bureaucrat bur("Bureaucrat", 1);
 
-	// normal
-	Bureaucrat bur2("c", 42);
-	std::cout << bur2 << std::endl;
-
-	Bureaucrat bur3("d", 1);
-	std::cout << bur3 << std::endl;
-
-	ShrubberyCreationForm scf("SCF");
-	RobotomyRequestForm rrf("RRF");
-	PresidentialPardonForm ppf("PPF");
-	try
+	rrf = intern.makeForm("robotomy request", "Bender");
+	if (rrf)
 	{
-		bur3.signForm(scf);
-		bur3.executeForm(scf);
-		bur3.signForm(rrf);
-		bur3.executeForm(rrf);
-		bur3.signForm(ppf);
-		bur3.executeForm(ppf);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
+		bur.signForm(*rrf);
+		bur.executeForm(*rrf);
 	}
 
-	ShrubberyCreationForm scf_e("scf_e");
-	RobotomyRequestForm rrf_e("rrf_e");
-	PresidentialPardonForm ppf_e("ppf_e");
-
-	// scf error
-	Bureaucrat err_scf_sign("err_scf", 138);
-	try
+	ppf = intern.makeForm("presidential pardon", "nusu");
+	if (ppf)
 	{
-		err_scf_sign.signForm(scf_e);
-		err_scf_sign.executeForm(scf_e);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
+		bur.signForm(*ppf);
+		bur.executeForm(*ppf);
 	}
 
-	Bureaucrat err_rff("err_rrf", 46);
-	try
+	scf = intern.makeForm("shrubbery creation", "uuuu");
+	if (scf)
 	{
-		err_rff.signForm(rrf_e);
-		err_rff.executeForm(rrf_e);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
+		bur.signForm(*scf);
+		bur.executeForm(*scf);
 	}
 
-	Bureaucrat err_ppf("err_ppf", 6);
-	try
-	{
-		err_ppf.signForm(ppf_e);
-		err_ppf.executeForm(ppf_e);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+	noexist = intern.makeForm("none", "null");
+	if (noexist == NULL)
+		std::cout << "no exist fome name" << std::endl;
 
+	delete(rrf);
+	delete(ppf);
+	delete(scf);
 	return (0);
 }

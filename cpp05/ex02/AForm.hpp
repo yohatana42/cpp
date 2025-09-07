@@ -10,6 +10,7 @@ class Bureaucrat;
 
 class AForm
 {
+	public:
 	class GradeTooHighException : public std::exception
 	{
 		public:
@@ -28,7 +29,6 @@ class AForm
 			}
 	};
 
-	public:
 		AForm();
 		AForm(std::string name, const int exec, const int sign);
 		AForm(const AForm& src);
