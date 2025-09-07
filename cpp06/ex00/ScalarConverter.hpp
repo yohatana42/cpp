@@ -3,6 +3,7 @@
 
  #include <string>
  #include <iostream>
+ #include <sstream>
 
 class ScalarConverter
 {
@@ -11,8 +12,12 @@ class ScalarConverter
 		ScalarConverter(const ScalarConverter& src);
 		ScalarConverter& operator=(const ScalarConverter& src);
 		~ScalarConverter();
-		static int convert();
+		static void convert(std::string str);
 	private:
+		// void chenge_char(std::stringstream ss);
+		// void chenge_int(std::stringstream ss);
+		// void chenge_float(std::stringstream ss);
+		// void chenge_double(std::stringstream ss);
 
 };
 
