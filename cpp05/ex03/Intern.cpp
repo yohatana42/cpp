@@ -15,19 +15,37 @@ Intern& Intern::operator=(const Intern& src)
 
 Intern::~Intern() {}
 
+// STL(map)は禁止されています
 AForm *Intern::makeForm(std::string form_name, std::string target)
 {
-	func["presidential pardon"] = &createPresidentialPardonForm;
-	func["robotomy request"] = &createRobotomyRequestForm;
-	func["shrubbery creation"] = &createShrubberyCreationForm;
+	_formFunc func[3] = {&createPresidentialPardonForm
+					, &createRobotomyRequestForm
+					, &createShrubberyCreationForm};
+	std::string form_names[3] = {"presidential pardon"
+								, "robotomy request"
+								, "shrubbery creation"};
 
-	std::map<std::string, _formFunc>::iterator it = func.find(form_name);
-	if (it != func.end())
+	int num = -1;
+	for (int i = 0; i < 3; i++)
 	{
-		std::cout << "Intern creates " << form_name << std::endl;
-		return func[form_name](target);
+		if (form_name == form_names[i])
+		{
+			num = i;
+			break ;
+		}
 	}
-	std::cerr << "Error :no such form" << std::endl;
+	switch (num)
+	{
+		case 0:
+				return func[0](target);
+		case 1:
+				return func[1](target);
+		case 2:
+				return func[2](target);
+		default:
+			std::cerr << "Error :no such form" << std::endl;
+			return (NULL);
+	}
 	return (NULL);
 }
 

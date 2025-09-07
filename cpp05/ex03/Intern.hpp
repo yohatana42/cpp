@@ -18,7 +18,6 @@ class Intern
 		AForm *makeForm(std::string name, std::string target);
 	private:
 		typedef AForm* (*_formFunc)(std::string);
-		std::map<std::string, _formFunc> func;
 };
 
 	AForm* createPresidentialPardonForm(std::string target);
