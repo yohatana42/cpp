@@ -18,7 +18,7 @@ int main()
 	{
 		Bureaucrat bur3("d", 1);
 		std::cout << bur3 << std::endl;
-		bur3.remove_grade();
+		bur3.decrement();
 	}
 	catch(const std::exception& e)
 	{
@@ -49,7 +49,7 @@ int main()
 	{
 		Bureaucrat bur4("e", 150);
 		std::cout << bur4 << std::endl;
-		bur4.add_grade();
+		bur4.increment();
 	}
 	catch(const std::exception& e)
 	{

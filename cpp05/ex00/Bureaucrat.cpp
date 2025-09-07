@@ -36,7 +36,7 @@ unsigned int Bureaucrat::getGrade() const
 	return _grade;
 }
 
-void Bureaucrat::add_grade()
+void Bureaucrat::increment()
 {
 	if (_grade + 1 < 1)
 		throw GradeTooHighException();
@@ -47,7 +47,7 @@ void Bureaucrat::add_grade()
 	_grade++;
 }
 
-void Bureaucrat::remove_grade()
+void Bureaucrat::decrement()
 {
 	if (_grade - 1 < 1)
 		throw GradeTooHighException();

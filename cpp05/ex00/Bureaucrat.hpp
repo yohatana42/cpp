@@ -34,8 +34,8 @@ class Bureaucrat
 		std::string getName() const;
 		unsigned int getGrade() const;
 		std::string print() const;
-		void add_grade();
-		void remove_grade();
+		void increment();
+		void decrement();
 	private:
 		Bureaucrat();
 		const std::string _name;
