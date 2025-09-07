@@ -26,22 +26,13 @@ AForm::~AForm() {}
 
 bool AForm::beSigned(Bureaucrat& bur)
 {
-	try
+	if (_const_to_sign >= (int)bur.getGrade())
 	{
-		if (_const_to_sign >= (int)bur.getGrade())
-		{
-			_is_signed = true;
-			return (true);
-		}
-		else
-			throw GradeTooLowException();
+		_is_signed = true;
+		return (true);
 	}
-	catch (GradeTooLowException& e)
-	{
-		// std::cout << e.what() << std::endl;
-		throw e;
-		// return (false);
-	}
+	else
+		throw GradeTooLowException();
 }
 
 std::string AForm::getName() const

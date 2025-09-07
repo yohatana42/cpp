@@ -6,14 +6,6 @@
 
 int main()
 {
-	// exception
-	Bureaucrat bur("a", 0);
-	Bureaucrat bur1("b", 151);
-
-	// normal
-	Bureaucrat bur2("c", 42);
-	std::cout << bur2 << std::endl;
-
 	Bureaucrat bur3("d", 1);
 	std::cout << bur3 << std::endl;
 
@@ -49,7 +41,9 @@ int main()
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cout << err_scf_sign.getName() << " couldn't sign "
+					<< scf_e.getName() << " because "
+					<< e.what() << "." << std::endl;
 	}
 
 	Bureaucrat err_rff("err_rrf", 73);
@@ -59,7 +53,9 @@ int main()
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cout << err_rff.getName() << " couldn't sign "
+					<< rrf_e.getName() << " because "
+					<< e.what() << "." << std::endl;
 	}
 
 	Bureaucrat err_ppf("err_ppf", 26);
@@ -69,7 +65,9 @@ int main()
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cout << err_ppf.getName() << " couldn't sign "
+					<< ppf_e.getName() << " because "
+					<< e.what() << "." << std::endl;
 	}
 
 	// execute error

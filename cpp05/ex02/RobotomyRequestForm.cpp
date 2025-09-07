@@ -22,12 +22,19 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 
 bool RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
+	static int num = 0;
 	if ((unsigned int)getConstToExec() < executor.getGrade())
 		throw AForm::GradeTooLowException();
 	if (!getIsSigned())
 	{
 		throw std::runtime_error("is NOT signed");
 	}
-	std::cout << "rat tat tat" << std::endl;
-		return (true);
+	if (num % 2 == 1)
+	{
+		std::cout << "failed..." << std::endl;
+	}
+	else
+		std::cout << "rat tat tat" << std::endl;
+	num++;
+	return (true);
 }
