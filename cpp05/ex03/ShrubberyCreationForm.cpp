@@ -22,19 +22,22 @@ ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 bool ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
-	(void)executor;
-	if (getIsSigned())
+	if ((unsigned int)getConstToExec() < executor.getGrade())
+		throw AForm::GradeTooLowException();
+	if (!getIsSigned())
 	{
-		std::ofstream strm;
-		std::string filename;
-
-		filename = _target + "_shrubbery";
-		strm.open(filename.c_str());
-		strm << "trees!" << std::endl;
-		strm.close();
-		return (true);
+		throw std::runtime_error("is NOT signed");
 	}
-	else
-	std::cerr << getName() << " is NOT signed" << std::endl;
-	return (false);
+
+	std::ofstream strm;
+	std::string filename;
+
+	filename = _target + "_shrubbery";
+	strm.open(filename.c_str());
+	strm << "  /\\ " << std::endl;
+	strm << " /  \\" << std::endl;
+	strm << "/    \\" << std::endl;
+	strm << "  ||  " << std::endl;
+	strm.close();
+	return (true);
 }
