@@ -4,24 +4,13 @@ Bureaucrat::Bureaucrat() {}
 
 Bureaucrat::Bureaucrat(std::string name, unsigned int grade) : _name(name)
 {
-	try
+	if (grade < 1)
+		throw GradeTooHighException();
+	if (150 < grade)
 	{
-		if (grade < 1)
-			throw GradeTooHighException();
-		if (150 < grade)
-		{
-			throw GradeTooLowException();
-		}
-		_grade = grade;
+		throw GradeTooLowException();
 	}
-	catch (const GradeTooHighException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const GradeTooLowException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	_grade = grade;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat& src) : _name(src._name)
@@ -49,46 +38,24 @@ unsigned int Bureaucrat::getGrade() const
 
 void Bureaucrat::add_grade()
 {
-	try
+	if (_grade + 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade + 1)
 	{
-		if (_grade + 1 < 1)
-			throw GradeTooHighException();
-		if (150 < _grade + 1)
-		{
-			throw GradeTooLowException();
-		}
-		_grade++;
+		throw GradeTooLowException();
 	}
-	catch (const GradeTooHighException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const GradeTooLowException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	_grade++;
 }
 
 void Bureaucrat::remove_grade()
 {
-	try
+	if (_grade - 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade - 1)
 	{
-		if (_grade - 1 < 1)
-			throw GradeTooHighException();
-		if (150 < _grade - 1)
-		{
-			throw GradeTooLowException();
-		}
-		_grade--;
+		throw GradeTooLowException();
 	}
-	catch (const GradeTooHighException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const GradeTooLowException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	_grade--;
 }
 
 std::string Bureaucrat::print() const

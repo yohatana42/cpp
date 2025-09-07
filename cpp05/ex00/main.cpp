@@ -2,21 +2,59 @@
 
 int main()
 {
-	// exception
-	Bureaucrat bur("a", 0);
-	Bureaucrat bur1("b", 151);
+	std::cout << "=== normal ===" << std::endl;
+	try
+	{
+		Bureaucrat bur2("c", 42);
+		std::cout << bur2 << std::endl;
 
-	// normal
-	Bureaucrat bur2("c", 42);
-	std::cout << bur2 << std::endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
-	Bureaucrat bur3("d", 1);
-	std::cout << bur3 << std::endl;
-	bur3.remove_grade();
+	try
+	{
+		Bureaucrat bur3("d", 1);
+		std::cout << bur3 << std::endl;
+		bur3.remove_grade();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
-	Bureaucrat bur4("e", 150);
-	std::cout << bur4 << std::endl;
-	bur4.add_grade();
+	std::cout << "=== exception ===" << std::endl;
+	try
+	{
+		Bureaucrat bur("a", 0);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
+	try
+	{
+		Bureaucrat bur1("b", 151);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
+
+	try
+	{
+		Bureaucrat bur4("e", 150);
+		std::cout << bur4 << std::endl;
+		bur4.add_grade();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
 	return (0);
 }
