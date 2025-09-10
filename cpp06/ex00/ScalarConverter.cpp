@@ -17,43 +17,52 @@ ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(std::string str)
 {
-	chenge_char(str);
-	chenge_int(str);
-	chenge_float(str);
-	chenge_double(str);
-	std::cout << "" << std::endl;
-}
-
-static void chenge_char(std::string str)
-{
 	std::stringstream ss;
-
-	for (int i = 0;str[i] != '\0'; i++)
+	ss << str;
+	/*
+		1 まず型を判別する
+		2 atoi,atof(stdlib.h)で変換する
+		3 charはintを変換する
+		4 フロート型にするぜ（まじでよくわからん）
+	*/
+	if (str == "-inf" || str == "+inf" || str == "nan")
 	{
-		if (!std::isdigit(str[i]))
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "inf or nan" << std::endl;
+	}
+	else if (str == "-inff" || str == "+inff" || str == "nanf")
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "inff or nanf" << std::endl;
+	}
+	else
+	{
+		int num;
+		double double_num = 0;
+		float float_num = 0;
+
+		if (str[str.size() - 1] == 'f')
 		{
+			std::cout << "this is float" << std::endl;
+
 			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
+			std::cout << "float: " << float_num << std::endl;
+			std::cout << "double: " << double_num <<  std::endl;
+		}
+		else
+		{
+			num = atoi(str.c_str());
+			double_num = atof(str.c_str());
+			if (31 < num && num < 127)
+				std::cout << "char: " << "'" << (char)num << "'" << std::endl;
+			else
+				std::cout << "char:  Non displayable" << std::endl;
+			std::cout << "int: " << num << std::endl;
+			std::cout << "float: " << float_num << std::endl;
+			std::cout << "double: " << double_num <<  std::endl;
 		}
 	}
-	int num;
-	ss << str;
-	ss >> num;
-}
-
-static void chenge_int(std::string str)
-{
-	std::stringstream ss;
-	ss << str;
-}
-
-static void chenge_float(std::string str)
-{
-	std::stringstream ss;
-	ss << str;
-}
-
-static void chenge_double(std::string str)
-{
-	std::stringstream ss;
-	ss << str;
 }

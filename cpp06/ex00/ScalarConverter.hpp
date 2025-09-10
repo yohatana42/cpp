@@ -4,6 +4,7 @@
  #include <string>
  #include <iostream>
  #include <sstream>
+ #include <stdlib.h>
 
 class ScalarConverter
 {
@@ -13,12 +14,6 @@ class ScalarConverter
 		ScalarConverter& operator=(const ScalarConverter& src);
 		~ScalarConverter();
 		static void convert(std::string str);
-	private:
-		// void chenge_char(std::stringstream ss);
-		// void chenge_int(std::stringstream ss);
-		// void chenge_float(std::stringstream ss);
-		// void chenge_double(std::stringstream ss);
-
 };
 
 #endif
