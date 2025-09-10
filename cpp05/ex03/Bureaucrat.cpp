@@ -48,48 +48,26 @@ unsigned int Bureaucrat::getGrade() const
 	return _grade;
 }
 
-void Bureaucrat::add_grade()
+void Bureaucrat::increment()
 {
-	try
+	if (_grade - 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade - 1)
 	{
-		if (_grade + 1 < 1)
-			throw GradeTooHighException();
-		if (150 < _grade + 1)
-		{
-			throw GradeTooLowException();
-		}
-		_grade++;
+		throw GradeTooLowException();
 	}
-	catch (const GradeTooHighException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const GradeTooLowException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	_grade--;
 }
 
-void Bureaucrat::remove_grade()
+void Bureaucrat::decrement()
 {
-	try
+	if (_grade + 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade + 1)
 	{
-		if (_grade - 1 < 1)
-			throw GradeTooHighException();
-		if (150 < _grade - 1)
-		{
-			throw GradeTooLowException();
-		}
-		_grade--;
+		throw GradeTooLowException();
 	}
-	catch (const GradeTooHighException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const GradeTooLowException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	_grade++;
 }
 
 void Bureaucrat::signForm(AForm& form)

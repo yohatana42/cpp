@@ -39,17 +39,6 @@ unsigned int Bureaucrat::getGrade() const
 
 void Bureaucrat::increment()
 {
-	if (_grade + 1 < 1)
-		throw GradeTooHighException();
-	if (150 < _grade + 1)
-	{
-		throw GradeTooLowException();
-	}
-	_grade++;
-}
-
-void Bureaucrat::decrement()
-{
 	if (_grade - 1 < 1)
 		throw GradeTooHighException();
 	if (150 < _grade - 1)
@@ -57,6 +46,17 @@ void Bureaucrat::decrement()
 		throw GradeTooLowException();
 	}
 	_grade--;
+}
+
+void Bureaucrat::decrement()
+{
+	if (_grade + 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade + 1)
+	{
+		throw GradeTooLowException();
+	}
+	_grade++;
 }
 
 void Bureaucrat::signForm(Form& form)
