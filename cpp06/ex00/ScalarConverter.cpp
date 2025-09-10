@@ -15,7 +15,6 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter& src)
 
 ScalarConverter::~ScalarConverter() {}
 
-// オーバーフロー対策やる
 void ScalarConverter::convert(std::string str)
 {
 	std::stringstream ss;
@@ -24,10 +23,10 @@ void ScalarConverter::convert(std::string str)
 	double double_val = 0.0;
 	float float_val = 0.0f;
 
-	ss << str;
-	while (ss.eof())
-		ss >> char_val;
-	std::cout << char_val << std::endl;
+	// ss << str;
+	// while (ss.eof())
+	// 	ss >> char_val;
+	// std::cout << char_val << std::endl;
 
 	ss << str;
 	ss >> int_val;
@@ -35,18 +34,28 @@ void ScalarConverter::convert(std::string str)
 	{
 		std::cerr << "ss fail" << std::endl;
 	}
-	while (ss.eof())
+	while (ss.eof()|| ss.fail())
 		ss >> char_val;
+	ss.clear();
 
 	ss << str;
 	ss >> double_val;
-	while (ss.eof())
+	while (ss.eof() || ss.fail())
 		ss >> char_val;
+	ss.clear();
 
 	ss << str;
 	ss >> float_val;
 	while (ss.eof())
 		ss >> char_val;
+
+		// ????????
+// 	c6r3s5% ./ex00 49.1
+// char: Non displayable
+// int: 49
+// float: 0.149f
+// double: 0.149
+
 
 	CastUtil::print_all(char_val, int_val, double_val, float_val);
 
