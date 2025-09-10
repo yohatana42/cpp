@@ -6,14 +6,15 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/09/07 15:40:52 by yohatana         ###   ########.fr        #
+#    Updated: 2025/09/10 14:04:21 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex00
 SRCS = \
 		main.cpp\
-		ScalarConverter.cpp
+		ScalarConverter.cpp\
+		CastUtil.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++

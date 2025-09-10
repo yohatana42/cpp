@@ -7,6 +7,7 @@
  #include <stdlib.h>
  #include <iomanip>
  #include <limits>
+ #include "CastUtil.hpp"
 
 class ScalarConverter
 {

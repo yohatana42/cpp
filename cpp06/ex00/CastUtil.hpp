@@ -9,6 +9,7 @@ class CastUtil
 		CastUtil& operator=(const CastUtil& src);
 		~CastUtil();
 		static void cast_char();
+		static void print_all(char c, int num, double d, float f);
 };
 
 #endif

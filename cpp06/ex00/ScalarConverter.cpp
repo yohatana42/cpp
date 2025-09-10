@@ -41,6 +41,7 @@ void ScalarConverter::convert(std::string str)
 			return ;
 		}
 	}
+	CastUtil::print_all(print_char, print_int, print_double, print_float);
 	std::cout << "char: " << print_char << std::endl;
 	std::cout << "int: " << print_int << std::endl;
 	std::cout << "float: " << print_double << "f" << std::endl;
