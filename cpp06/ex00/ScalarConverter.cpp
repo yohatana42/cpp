@@ -29,23 +29,19 @@ void ScalarConverter::convert(std::string str)
 		print_int = print_char;
 		print_double = print_char;
 		print_float = print_char;
+		return (CastUtil::print_all(print_char, print_int, print_double, print_float));
 	}
 
 	for (int i = 0;str[i] != '\0';i++)
 	{
-		if (isdigit(str[i]) || str[i] == '.' || str[i] == 'f')
+		if (isdigit(str[i]) || str[i] == '.' || (str[i] == 'f' && i == (int)str.size() - 1)
+		|| (i == 0 && (str[i] == '-' || str[i] == '+')))
 			continue ;
 		else
 		{
-			std::cout << "!!! impossible !!!" << std::endl;
-			return ;
+			return CastUtil::print_all("impossible", "impossible", "impossible", "impossible");
 		}
 	}
-	CastUtil::print_all(print_char, print_int, print_double, print_float);
-	std::cout << "char: " << print_char << std::endl;
-	std::cout << "int: " << print_int << std::endl;
-	std::cout << "float: " << print_double << "f" << std::endl;
-	std::cout << "double: " << print_float <<  std::endl;
 }
 
 /*

@@ -14,17 +14,6 @@ int main()
 		std::cerr << e.what() << '\n';
 	}
 
-	try
-	{
-		Bureaucrat bur3("d", 1);
-		std::cout << bur3 << std::endl;
-		bur3.decrement();
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
 	std::cout << "=== exception ===" << std::endl;
 	try
 	{
@@ -44,12 +33,22 @@ int main()
 		std::cerr << e.what() << '\n';
 	}
 
+		try
+	{
+		Bureaucrat bur3("d", 1);
+		std::cout << bur3 << std::endl;
+		bur3.increment();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
 	try
 	{
 		Bureaucrat bur4("e", 150);
 		std::cout << bur4 << std::endl;
-		bur4.increment();
+		bur4.decrement();
 	}
 	catch(const std::exception& e)
 	{

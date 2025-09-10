@@ -22,7 +22,8 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 
 bool RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
-	static int num = 0;
+	srand(time(0));
+	int num = rand() % 2;
 	if ((unsigned int)getConstToExec() < executor.getGrade())
 		throw AForm::GradeTooLowException();
 	if (!getIsSigned())

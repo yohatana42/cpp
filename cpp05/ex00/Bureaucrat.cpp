@@ -36,18 +36,8 @@ unsigned int Bureaucrat::getGrade() const
 	return _grade;
 }
 
+// これ逆！！！！
 void Bureaucrat::increment()
-{
-	if (_grade + 1 < 1)
-		throw GradeTooHighException();
-	if (150 < _grade + 1)
-	{
-		throw GradeTooLowException();
-	}
-	_grade++;
-}
-
-void Bureaucrat::decrement()
 {
 	if (_grade - 1 < 1)
 		throw GradeTooHighException();
@@ -56,6 +46,17 @@ void Bureaucrat::decrement()
 		throw GradeTooLowException();
 	}
 	_grade--;
+}
+
+void Bureaucrat::decrement()
+{
+	if (_grade + 1 < 1)
+		throw GradeTooHighException();
+	if (150 < _grade + 1)
+	{
+		throw GradeTooLowException();
+	}
+	_grade++;
 }
 
 std::string Bureaucrat::print() const
