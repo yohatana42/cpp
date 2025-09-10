@@ -27,11 +27,12 @@ void ScalarConverter::convert(std::string str)
 static void chenge_char(std::string str)
 {
 	std::stringstream ss;
-	for (int i = 0;str[i] != '\0', i++)
+
+	for (int i = 0;str[i] != '\0'; i++)
 	{
 		if (!std::isdigit(str[i]))
 		{
-			std::cout << "" << std::endl;
+			std::cout << "char: impossible" << std::endl;
 		}
 	}
 	int num;
