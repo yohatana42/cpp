@@ -18,30 +18,64 @@ ScalarConverter::~ScalarConverter() {}
 // オーバーフロー対策やる
 void ScalarConverter::convert(std::string str)
 {
-	char print_char = 0;
-	int print_int = 0;
-	double print_double = 0.0;
-	float print_float = 0.0f;
+	std::stringstream ss;
+	char char_val = 0;
+	int int_val = 0;
+	double double_val = 0.0;
+	float float_val = 0.0f;
 
-	if (str.size() == 1 && isprint(str[0]))
-	{
-		print_char = str[0];
-		print_int = print_char;
-		print_double = print_char;
-		print_float = print_char;
-		return (CastUtil::print_all(print_char, print_int, print_double, print_float));
-	}
+	ss << str;
+	while (ss.eof())
+		ss >> char_val;
+	std::cout << char_val << std::endl;
 
-	for (int i = 0;str[i] != '\0';i++)
+	ss << str;
+	ss >> int_val;
+	if (ss.fail())
 	{
-		if (isdigit(str[i]) || str[i] == '.' || (str[i] == 'f' && i == (int)str.size() - 1)
-		|| (i == 0 && (str[i] == '-' || str[i] == '+')))
-			continue ;
-		else
-		{
-			return CastUtil::print_all("impossible", "impossible", "impossible", "impossible");
-		}
+		std::cerr << "ss fail" << std::endl;
 	}
+	while (ss.eof())
+		ss >> char_val;
+
+	ss << str;
+	ss >> double_val;
+	while (ss.eof())
+		ss >> char_val;
+
+	ss << str;
+	ss >> float_val;
+	while (ss.eof())
+		ss >> char_val;
+
+	CastUtil::print_all(char_val, int_val, double_val, float_val);
+
+	// if (str.size() == 1 && isalpha(str[0]))
+	// {
+	// 	print_char = str[0];
+	// 	print_int = print_char;
+	// 	std::cout << print_int << std::endl;
+	// 	print_double = print_char;
+	// 	print_float = print_char;
+	// 	return (CastUtil::print_all(print_char, print_int, print_double, print_float));
+	// }
+
+	// for (int i = 0;str[i] != '\0';i++)
+	// {
+	// 	if (isdigit(str[i]) || str[i] == '.' || (str[i] == 'f' && i == (int)str.size() - 1)
+	// 	|| (i == 0 && (str[i] == '-' || str[i] == '+')))
+	// 		continue ;
+	// 	else
+	// 		return CastUtil::print_all("impossible", "impossible", "impossible", "impossible");
+	// }
+
+	// // intの場合
+	// // 2147483647 10桁
+	// print_int = static_cast<int>(str);
+	// print_char = print_int;
+	// print_double = print_int;
+	// print_float = print_int;
+	// return CastUtil::print_all("impossible", "impossible", "impossible", "impossible");
 }
 
 /*
