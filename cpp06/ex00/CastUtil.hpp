@@ -3,6 +3,7 @@
 
  #include <iostream>
  #include <string>
+ #include <iomanip>
 
 class CastUtil
 {
@@ -13,8 +14,7 @@ class CastUtil
 		~CastUtil();
 		static void cast_char();
 		static void print_all(char c, int num, double d, float f);
-		// static void print_all(std::string c_str, std::string num_str, double d, float f);
-		static void print_all(std::string c_str, std::string num_str, std::string d, std::string f);
+		static void print_all_integer(char c, int num, double d, float f);
 };
 
 #endif

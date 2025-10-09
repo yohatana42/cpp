@@ -23,93 +23,90 @@ void ScalarConverter::convert(std::string str)
 	double double_val = 0.0;
 	float float_val = 0.0f;
 
+	// nanf nan
+	if (str == "nan" || str == "nanf")
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: nanf" << std::endl;
+		std::cout << "double: nan" <<  std::endl;
+	}
+	else if (str == "-inf")
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: -inf" << std::endl;
+		std::cout << "double: -inf" <<  std::endl;
+	}
+	else if (str == "+inf")
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: +inf" << std::endl;
+		std::cout << "double: +inf" <<  std::endl;
+	}
+
 	if (str.size() == 1 && isalpha(str[0]))
 	{
+		std::cout << "-- char --" << std::endl;
 		ss << str;
 		ss >> char_val;
 		int_val = static_cast<int>(char_val);
-		CastUtil::print_all(char_val, int_val, double_val, float_val);
+		double_val = static_cast<double>(int_val);
+		float_val = static_cast<float>(int_val);
+		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
+		return ;
 	}
 	else if (str.find('.') == std::string::npos)
 	{
+		std::cout << "== int ==" << std::endl;
 		ss << str;
 		ss >> int_val;
 		if (ss.fail())
-			std::cerr << "ss fail" << std::endl;
+		{
+			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
+			std::cout << "float: impossible" << std::endl;
+			std::cout << "double: impossible" <<  std::endl;
+			return ;
+		}
 		// intの場合
 		char_val = static_cast<char>(int_val);
 		double_val = static_cast<double>(int_val);
 		float_val = static_cast<float>(int_val);
+		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
+		return ;
+	}
+	if (str.find('f') == str.size() - 1)
+	{
+		std::cout << "~~ float ~~" << std::endl;
+		ss << str;
+		ss >> float_val;
+		if (ss.fail())
+			std::cerr << "ss fail" << std::endl;
+		char_val = static_cast<char>(float_val);
+		int_val = static_cast<int>(float_val);
+		double_val = static_cast<double>(float_val);
 		CastUtil::print_all(char_val, int_val, double_val, float_val);
-	}
-
-
-}
-
-/*
-void ScalarConverter::convert(std::string str)
-{
-	int num;
-	double double_num = 0.0;
-	float float_num = 0;
-
-	std::string print_char;
-	std::string print_int;
-
-	if (str == "nan" || str == "nanf")
-	{
-		float_num = std::numeric_limits<float>::quiet_NaN();
-		double_num = std::numeric_limits<double>::quiet_NaN();
-		print_char = "impossible";
-		print_int = "impossible";
-	}
-	else if (str == "-inf" || str == "+inf")
-	{
-		print_char = "impossible";
-		print_int = "impossible";
-		float_num = std::numeric_limits<float>::infinity();
-		double_num = std::numeric_limits<double>::infinity();
-	}
-	else if (str == "-inff" || str == "+inff")
-	{
-		print_char = "impossible";
-		print_int = "impossible";
-		float_num = std::numeric_limits<float>::infinity();
-		double_num = std::numeric_limits<double>::infinity();
+		return ;
 	}
 	else
 	{
-		for (int i = 0; str[i] != '\0'; i++)
-		{
-			if (str[i] == '.' && i != 0 && i != (int)str.size() -1)
-			{
-				double_num = atof(str.c_str());
-				float_num = static_cast<float>(double_num);
-				print_char = "impossible";
-				print_int = "impossible";
-				std::cout << "char: " << print_char << std::endl;
-				std::cout << "int: " << print_int << std::endl;
-				std::cout << "float: " << float_num << "f" << std::endl;
-				std::cout << "double: " << double_num <<  std::endl;
-				return ;
-			}
-		}
-		num = atoi(str.c_str());
-		double_num = atof(str.c_str());
-		float_num = static_cast<float>(double_num);
-		if (31 < num && num < 127)
-		std::cout << "char: " << "'" << (char)num << "'" << std::endl;
-		else
-		{
-			std::cout << "char:  Non displayable" << std::endl;
-			std::cout << "int: " << num << std::endl;
-			std::cout << "float: " << std::fixed << std::setprecision(1) << float_num << std::endl;
-			std::cout << "double: " << std::fixed << std::setprecision(1) << double_num <<  std::endl;
-		}
-		std::cout << "char: " << print_char << std::endl;
-		std::cout << "int: " << print_int << std::endl;
-		std::cout << "float: " << float_num << "f" << std::endl;
-		std::cout << "double: " << double_num <<  std::endl;
+		std::cout << "'' double ''" << std::endl;
+		ss << str;
+		ss >> double_val;
+		if (ss.fail())
+			std::cerr << "ss fail" << std::endl;
+		char_val = static_cast<char>(double_val);
+		int_val = static_cast<int>(double_val);
+		float_val = static_cast<double>(double_val);
+		CastUtil::print_all(char_val, int_val, double_val, float_val);
+		return ;
 	}
+
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+	std::cout << "float: impossible" << std::endl;
+	std::cout << "double: impossible" <<  std::endl;
+
 }
-*/
