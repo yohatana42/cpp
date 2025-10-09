@@ -6,11 +6,11 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/09/07 15:24:04 by yohatana         ###   ########.fr        #
+#    Updated: 2025/10/09 18:00:54 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ex00
+NAME = ex01
 SRCS = \
 		main.cpp\
 		Bureaucrat.cpp
