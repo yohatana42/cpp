@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
+#    By: yoshiko <yoshiko@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/10/09 18:00:54 by yohatana         ###   ########.fr        #
+#    Updated: 2025/10/10 17:12:45 by yoshiko          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex01
 SRCS = \
 		main.cpp\
-		Bureaucrat.cpp
+		Serializer.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++
