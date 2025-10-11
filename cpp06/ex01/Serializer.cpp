@@ -15,7 +15,7 @@ Serializer& Serializer::operator=(const Serializer& src)
 
 Serializer::~Serializer() {}
 
-uintptr_t serialize(Data* ptr)
+uintptr_t Serializer::serialize(Data* ptr)
 {
 	uintptr_t result;
 
@@ -23,7 +23,7 @@ uintptr_t serialize(Data* ptr)
 	return (result);
 }
 
-Data* deserialize(uintptr_t raw)
+Data* Serializer::deserialize(uintptr_t raw)
 {
 	Data *result;
 
