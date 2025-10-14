@@ -8,5 +8,6 @@ int main()
 	castBase castbase;
 	Base *base = castbase.generate();
 	castbase.identify(base);
+	castbase.identify(*base);
 	return (0);
 }

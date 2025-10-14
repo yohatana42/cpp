@@ -17,7 +17,7 @@ castBase::~castBase() {}
 Base* castBase::generate(void)
 {
 	srand(time(0));
-	int num = rand() % 2;
+	int num = rand() % 3;
 	if (num % 3 == 1)
 	{
 		return (new A());
@@ -42,7 +42,9 @@ void castBase::identify(Base* p)
 	else if (dynamic_cast<C*>(p) != NULL)
 	{
 		std::cout << "C" << std::endl;
-}
+	}
+	else
+		std::cout << "unknown" << std::endl;
 }
 
 void castBase::identify(Base& p)
@@ -63,7 +65,16 @@ void castBase::identify(Base& p)
 		}
 		catch (const std::exception& e)
 		{
-			std::cout << "C" << std::endl;
+			try
+			{
+				C& c = dynamic_cast<C&>(p);
+				(void)c;
+				std::cout << "C" << std::endl;
+			}
+			catch (const std::exception& e)
+			{
+				std::cout << "unknowm" << std::endl;
+			}
 		}
 	}
 }
