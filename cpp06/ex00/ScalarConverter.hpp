@@ -17,6 +17,8 @@ class ScalarConverter
 		ScalarConverter& operator=(const ScalarConverter& src);
 		~ScalarConverter();
 		static void convert(std::string str);
+	private:
+		static bool cast_char(std::string str);
 };
 
 #endif

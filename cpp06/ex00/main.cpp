@@ -13,3 +13,28 @@ int main(int argc, char **argv)
 
 	return (0);
 }
+/*
+// test patern
+1 ok
+42 ok
+200 ok
+a ok
+z ok
+A ok
+Z ok
+-1 ok
+-200 ok
+0 ok
+0.0 ok
+1f ok
+5.27136f ok
+42.198467 ok
+0.1732783 ok
+
+// error
+ab ok
+123s122 ok
+
+
+*/
+

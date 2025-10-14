@@ -30,6 +30,7 @@ void ScalarConverter::convert(std::string str)
 		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: nanf" << std::endl;
 		std::cout << "double: nan" <<  std::endl;
+		return ;
 	}
 	else if (str == "-inf")
 	{
@@ -37,6 +38,7 @@ void ScalarConverter::convert(std::string str)
 		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: -inf" << std::endl;
 		std::cout << "double: -inf" <<  std::endl;
+		return ;
 	}
 	else if (str == "+inf")
 	{
@@ -44,11 +46,20 @@ void ScalarConverter::convert(std::string str)
 		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: +inf" << std::endl;
 		std::cout << "double: +inf" <<  std::endl;
+		return ;
+	}
+
+	if (!cast_char(str))
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" <<  std::endl;
+		return ;
 	}
 
 	if (str.size() == 1 && isalpha(str[0]))
 	{
-		std::cout << "-- char --" << std::endl;
 		ss << str;
 		ss >> char_val;
 		int_val = static_cast<int>(char_val);
@@ -59,7 +70,6 @@ void ScalarConverter::convert(std::string str)
 	}
 	else if (str.find('.') == std::string::npos)
 	{
-		std::cout << "== int ==" << std::endl;
 		ss << str;
 		ss >> int_val;
 		if (ss.fail())
@@ -79,7 +89,6 @@ void ScalarConverter::convert(std::string str)
 	}
 	if (str.find('f') == str.size() - 1)
 	{
-		std::cout << "~~ float ~~" << std::endl;
 		ss << str;
 		ss >> float_val;
 		if (ss.fail())
@@ -92,7 +101,6 @@ void ScalarConverter::convert(std::string str)
 	}
 	else
 	{
-		std::cout << "'' double ''" << std::endl;
 		ss << str;
 		ss >> double_val;
 		if (ss.fail())
@@ -104,9 +112,34 @@ void ScalarConverter::convert(std::string str)
 		return ;
 	}
 
-	std::cout << "char: impossible" << std::endl;
-	std::cout << "int: impossible" << std::endl;
-	std::cout << "float: impossible" << std::endl;
-	std::cout << "double: impossible" <<  std::endl;
+}
 
+bool ScalarConverter::cast_char(std::string str)
+{
+	int point_count = 0;
+
+	if (str.size() == 1 && isalpha(str[0]))
+		return (true);
+
+	for (int i = 0; i < (int)str.size() - 1; i++)
+	{
+		if (str[i] == '-' && i == 0)
+			continue ;
+		if (!isdigit(str[i]) && str[i] != '.')
+		{
+			if (i == (int)str.size() -1 && str[i] == 'f')
+				return (true);
+			return (false);
+		}
+	}
+
+	for (int i = 0; i < (int)str.size() - 1 ;i++)
+	{
+		if (str[i] == '.')
+			point_count++;
+	}
+	if (point_count == 1 || point_count == 0)
+		return (true);
+	else
+		return (false);
 }

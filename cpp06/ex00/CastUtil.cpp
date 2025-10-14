@@ -15,11 +15,6 @@ CastUtil& CastUtil::operator=(const CastUtil& src)
 
 CastUtil::~CastUtil() {}
 
-void CastUtil::cast_char()
-{
-
-}
-
 void CastUtil::print_all(char c, int num, double d, float f)
 {
 	if (31 < c && c < 127)
@@ -33,7 +28,7 @@ void CastUtil::print_all(char c, int num, double d, float f)
 
 void CastUtil::print_all_integer(char c, int num, double d, float f)
 {
-	if (31 < c && c < 127)
+	if (31 < num && num < 127)
 		std::cout << "char: " << c << std::endl;
 	else
 		std::cout << "char: Non displayable" << std::endl;
