@@ -5,9 +5,12 @@
  #include <iostream>
  #include <sstream>
  #include <stdlib.h>
+ #include <cstdlib>
  #include <iomanip>
  #include <limits>
  #include "CastUtil.hpp"
+ #include <cerrno>
+ #include <limits>
 
 class ScalarConverter
 {
@@ -19,6 +22,7 @@ class ScalarConverter
 		ScalarConverter();
 		ScalarConverter(const ScalarConverter& src);
 		static bool cast_char(std::string str);
+		
 };
 
 #endif

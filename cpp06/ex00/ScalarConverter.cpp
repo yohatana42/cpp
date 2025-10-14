@@ -23,6 +23,18 @@ void ScalarConverter::convert(std::string str)
 	double double_val = 0.0;
 	float float_val = 0.0f;
 
+	char* end;
+    errno = 0; // errnoをリセット
+    double_val = std::strtod(str.c_str(), &end);
+	if (errno == ERANGE)
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" <<  std::endl;
+		return ;
+	}
+
 	// nanf nan
 	if (str == "nan" || str == "nanf")
 	{
@@ -96,19 +108,23 @@ void ScalarConverter::convert(std::string str)
 		char_val = static_cast<char>(float_val);
 		int_val = static_cast<int>(float_val);
 		double_val = static_cast<double>(float_val);
-		CastUtil::print_all(char_val, int_val, double_val, float_val);
+		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
 		return ;
 	}
 	else
 	{
+
 		ss << str;
 		ss >> double_val;
 		if (ss.fail())
 			std::cerr << "ss fail" << std::endl;
 		char_val = static_cast<char>(double_val);
 		int_val = static_cast<int>(double_val);
-		float_val = static_cast<double>(double_val);
-		CastUtil::print_all(char_val, int_val, double_val, float_val);
+		if (double_val < std::numeric_limits<float>::min() || double_val > std::numeric_limits<float>::max())
+			std::cout << "float: immposible" << std::endl;
+		else
+			float_val = static_cast<double>(double_val);
+		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
 		return ;
 	}
 
