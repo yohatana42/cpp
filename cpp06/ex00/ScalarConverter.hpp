@@ -12,12 +12,12 @@
 class ScalarConverter
 {
 	public:
-		ScalarConverter();
-		ScalarConverter(const ScalarConverter& src);
 		ScalarConverter& operator=(const ScalarConverter& src);
 		~ScalarConverter();
 		static void convert(std::string str);
 	private:
+		ScalarConverter();
+		ScalarConverter(const ScalarConverter& src);
 		static bool cast_char(std::string str);
 };
 
