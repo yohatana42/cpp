@@ -73,7 +73,7 @@ void castBase::identify(Base& p)
 			}
 			catch (const std::exception& e)
 			{
-				std::cout << "unknowm" << std::endl;
+				std::cout << "unknown" << std::endl;
 			}
 		}
 	}
