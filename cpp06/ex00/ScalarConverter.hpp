@@ -12,6 +12,9 @@
  #include <cerrno>
  #include <limits>
 
+#include <cfloat>
+#include <cmath>
+
 class ScalarConverter
 {
 	public:
@@ -21,8 +24,10 @@ class ScalarConverter
 	private:
 		ScalarConverter();
 		ScalarConverter(const ScalarConverter& src);
-		static bool cast_char(std::string str);
-		
+		static bool validate_input(std::string str);
+		static bool validate_overflow(std::string str);
+		static void	print_impossible();
+
 };
 
 #endif

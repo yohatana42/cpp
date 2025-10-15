@@ -17,145 +17,122 @@ ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(std::string str)
 {
-	std::stringstream ss;
-	char char_val = 0;
-	int int_val = 0;
-	double double_val = 0.0;
-	float float_val = 0.0f;
+	if (!ScalarConverter::validate_input(str))
+	{
+		ScalarConverter::print_impossible();
+		return ;
+	}
+	if (!ScalarConverter::validate_overflow(str))
+	{
+		ScalarConverter::print_impossible();
+		return ;
+	}
 
+	// 一回全部doubleにする
+	// char c_val = 0;
+	// int int_val = 0;
+	// float f_val = 0;
+	double d_val = 0;
 	char* end;
-    errno = 0; // errnoをリセット
-    double_val = std::strtod(str.c_str(), &end);
-	if (errno == ERANGE)
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: impossible" << std::endl;
-		std::cout << "double: impossible" <<  std::endl;
-		return ;
-	}
 
-	// nanf nan
-	if (str == "nan" || str == "nanf")
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: nanf" << std::endl;
-		std::cout << "double: nan" <<  std::endl;
-		return ;
-	}
-	else if (str == "-inf")
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: -inf" << std::endl;
-		std::cout << "double: -inf" <<  std::endl;
-		return ;
-	}
-	else if (str == "+inf")
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: +inf" << std::endl;
-		std::cout << "double: +inf" <<  std::endl;
-		return ;
-	}
+    d_val = std::strtod(str.c_str(), &end);
 
-	if (!cast_char(str))
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: impossible" << std::endl;
-		std::cout << "double: impossible" <<  std::endl;
-		return ;
-	}
-
+	std::stringstream ss;
+	// char
 	if (str.size() == 1 && isalpha(str[0]))
 	{
-		ss << str;
-		ss >> char_val;
-		int_val = static_cast<int>(char_val);
-		double_val = static_cast<double>(int_val);
-		float_val = static_cast<float>(int_val);
-		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
+		std::cout << "char" << std::endl;
 		return ;
 	}
-	else if (str.find('.') == std::string::npos)
-	{
-		ss << str;
-		ss >> int_val;
-		if (ss.fail())
-		{
-			std::cout << "char: impossible" << std::endl;
-			std::cout << "int: impossible" << std::endl;
-			std::cout << "float: impossible" << std::endl;
-			std::cout << "double: impossible" <<  std::endl;
-			return ;
-		}
-		// intの場合
-		char_val = static_cast<char>(int_val);
-		double_val = static_cast<double>(int_val);
-		float_val = static_cast<float>(int_val);
-		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
-		return ;
-	}
-	if (str.find('f') == str.size() - 1)
-	{
-		ss << str;
-		ss >> float_val;
-		if (ss.fail())
-			std::cerr << "ss fail" << std::endl;
-		char_val = static_cast<char>(float_val);
-		int_val = static_cast<int>(float_val);
-		double_val = static_cast<double>(float_val);
-		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
-		return ;
-	}
-	else
-	{
 
-		ss << str;
-		ss >> double_val;
-		if (ss.fail())
-			std::cerr << "ss fail" << std::endl;
-		char_val = static_cast<char>(double_val);
-		int_val = static_cast<int>(double_val);
-		if (double_val < std::numeric_limits<float>::min() || double_val > std::numeric_limits<float>::max())
-			std::cout << "float: immposible" << std::endl;
-		else
-			float_val = static_cast<double>(double_val);
-		CastUtil::print_all_integer(char_val, int_val, double_val, float_val);
-		return ;
+	bool point_flg = false;
+	for (int i = 0;i < (int)str.size(); i++)
+	{
+		if (str[i] == '.')
+			point_flg = true;
 	}
+
+	// if (d_val < std::numeric_limits<char>::min() || d_val > std::numeric_limits<char>::max())
+	// 		std::cout << "char: immposible" << std::endl;
+	// else
+	// {
+	// 	c_val = static_cast<char>(d_val);
+	// 	if (isprint(c_val))
+	// 		std::cout << "char: " << c_val << std::endl;
+	// 	else
+	// 		std::cout << "char: Non displayable" << std::endl;
+	// }
+	// if (d_val < std::numeric_limits<int>::min() || d_val > std::numeric_limits<int>::max())
+	// 	std::cout << "int :immposible" << std::endl;
+	// else
+	// {
+	// 	int_val = static_cast<int>(d_val);
+	// 	std::cout << "int :" << int_val << std::endl;
+	// }
+
+	// if (d_val < std::numeric_limits<float>::min() || d_val > std::numeric_limits<float>::max())
+	// 	std::cout << "float :immposible" << std::endl;
+	// else
+	// {
+	// 	f_val = static_cast<float>(d_val);
+	// 	std::cout << "float :" << f_val << std::endl;
+	// }
+	// std::cout << "double :" << d_val << std::endl;
 
 }
 
-bool ScalarConverter::cast_char(std::string str)
-{
-	int point_count = 0;
-
+bool ScalarConverter::validate_input(std::string str)
+ {
 	if (str.size() == 1 && isalpha(str[0]))
-		return (true);
+			return (true);
 
-	for (int i = 0; i < (int)str.size() - 1; i++)
+	int point_count = 0;
+	for (int i = 0; i < (int)str.size(); i++)
 	{
-		if (str[i] == '-' && i == 0)
+		if (isdigit(str[i]))
 			continue ;
-		if (!isdigit(str[i]) && str[i] != '.')
+		else if (i == 0 && str[i] == '-')
+			continue ;
+		else if (i == (int)str.size() - 1 && str[i] == 'f')
+			continue ;
+		else if (str[i] == '.')
 		{
-			if (i == (int)str.size() -1 && str[i] == 'f')
-				return (true);
-			return (false);
-		}
-	}
-
-	for (int i = 0; i < (int)str.size() - 1 ;i++)
-	{
-		if (str[i] == '.')
+			if (i == 0 || i == (int)str.size() - 1)
+				return (false);
 			point_count++;
+			continue ;
+		}
+		else
+			return (false);
 	}
 	if (point_count == 1 || point_count == 0)
 		return (true);
-	else
+	return (false);
+ }
+
+bool ScalarConverter::validate_overflow(std::string str)
+ {
+	double d_val = 0;
+	std::stringstream ss;
+
+	char* end;
+	errno = 0;
+	d_val = std::strtod(str.c_str(), &end);
+	if (errno == ERANGE)
 		return (false);
-}
+	return (true);
+ }
+
+void	ScalarConverter::print_impossible()
+ {
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+	std::cout << "float: impossible" << std::endl;
+	std::cout << "double: impossible" <<  std::endl;
+ }
+
+ /*
+
+ double max
+ 179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+ */
