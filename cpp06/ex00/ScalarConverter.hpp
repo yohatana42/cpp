@@ -27,6 +27,8 @@ class ScalarConverter
 		static bool validate_input(std::string str);
 		static bool validate_overflow(std::string str);
 		static void	print_impossible();
+		static void print_char(std::string str);
+		static void print_int(std::string str);
 
 };
 
