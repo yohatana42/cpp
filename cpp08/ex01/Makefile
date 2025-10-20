@@ -6,14 +6,14 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/07/26 16:21:46 by yohatana         ###   ########.fr        #
+#    Updated: 2025/10/19 17:49:40 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ex00
+NAME = ex01
 SRCS = \
 		main.cpp\
-		Bureaucrat.cpp
+		Span.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = c++
