@@ -107,7 +107,7 @@ bool BitcoinExchange::validate_format(std::string line)
 	int pipe_pos2 = line.rfind("|");
 	if (pipe_pos == (int)std::string::npos || pipe_pos != pipe_pos2)
 	{
-		std::cout << "Error: bad input => " << line<< std::endl;
+		std::cout << "Error: bad input => " << line << std::endl;
 		return (false);
 	}
 
@@ -119,7 +119,10 @@ bool BitcoinExchange::validate_format(std::string line)
 	value = line.substr(pipe_pos, line.size());
 
 	if (!validate_date(date))
+	{
+		std::cout << "Error: bad input => " << line << std::endl;
 		return (false);
+	}
 	if (!validate_value(value))
 		return (false);
 	return (true);
@@ -127,27 +130,73 @@ bool BitcoinExchange::validate_format(std::string line)
 
 bool BitcoinExchange::validate_date(std::string date)
 {
-	(void)date;
-	std::string year;
-	std::string month;
-	std::string day;
+	std::stringstream ss;
+	int year;
+	int month;
+	int day;
+	int m_array[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-	// -で区切る
+	for (int i = 0; i < (int)date.size(); i++)
+	{
+		if (date[i] != '-' && !isdigit(date[i]))
+			return (false);
+	}
+
 	int left_split_pos = date.find("-");
 	int right_split_pos = date.rfind("-");
 
-	year = date.substr(0, left_split_pos);
-	month = date.substr(left_split_pos, right_split_pos);
-	day = date.substr(right_split_pos, date.size());
+	ss << date.substr(0, left_split_pos);
+	ss >> year;
+	ss << date.substr(left_split_pos, right_split_pos);
+	ss >> month;
+	ss << date.substr(right_split_pos, date.size());
+	ss >> day;
 
-	// 年がcsvデータの一番最初の日付よりも前か、実行時の年以降なら弾く
-	// csvの一番最初のデータはイテレーターのstartで取れる　多分
+	if ((_current_m < month && _current_y == year)
+		|| (_current_d < day && _current_m == month && _current_y == year))
+		return (false);
+	if (_current_y < year)
+		return (false);
+	if (12 < month || month < 0)
+		return (false);
+	if (m_array[month - 1] < day
+		|| (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+						&& m_array[month - 1] + 1 < day))
+		return (false);
 
-	// 月の範囲が１〜１２であること
-	// 日付の範囲が月に沿った範囲であること
-
+	if (is_before_first_record(year, month, day))
+		return (false);
 
 	return (true);
+}
+
+bool BitcoinExchange::is_before_first_record(int y, int m, int d)
+{
+	int f_year;
+	int f_month;
+	int f_day;
+	std::string first_date;
+	std::stringstream ss;
+
+	std::map<std::string, std::string>::iterator it = _data.begin();
+	first_date = it->first;
+
+	int left_split_pos = first_date.find("-");
+	int right_split_pos = first_date.rfind("-");
+
+	ss << first_date.substr(0, left_split_pos);
+	ss >> f_year;
+	ss << first_date.substr(left_split_pos, right_split_pos);
+	ss >> f_month;
+	ss << first_date.substr(right_split_pos, first_date.size());
+	ss >> f_day;
+	if (y < f_year)
+		return (true);
+	if (m < f_month)
+		return (true);
+	if (d < f_day)
+		return (true);
+	return (false);
 }
 
 bool BitcoinExchange::validate_value(std::string value)
@@ -185,7 +234,6 @@ void BitcoinExchange::trim_space(std::string& line)
 
 void BitcoinExchange::get_current_date()
 {
-	// // 現在の年を取得する
 	time_t t;
 
 	t = time(NULL);

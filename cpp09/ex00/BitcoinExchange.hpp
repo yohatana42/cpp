@@ -30,6 +30,7 @@ class BitcoinExchange
 		int _current_d;
 		std::map<std::string, std::string> _data;
 		void print_error(std::string str);
+		bool is_before_first_record(int y, int m, int d);
 };
 
  #endif
