@@ -94,7 +94,7 @@ bool BitcoinExchange::read_data()
 			continue ;
 		split_pos = line.find(",");
 		_data.insert(std::make_pair(line.substr(0, split_pos)
-									,line.substr(split_pos + 1, line.size())));
+									,line.substr(split_pos + 1, line.size() - (split_pos + 1))));
 		++i;
 	}
 	stream.close();
@@ -116,7 +116,7 @@ bool BitcoinExchange::validate_format(std::string line)
 	std::string date;
 	std::string value;
 	date = line.substr(0, pipe_pos - 1);
-	value = line.substr(pipe_pos, line.size());
+	value = line.substr(pipe_pos, line.size() - pipe_pos);
 
 	if (!validate_date(date))
 	{
@@ -145,21 +145,43 @@ bool BitcoinExchange::validate_date(std::string date)
 	int left_split_pos = date.find("-");
 	int right_split_pos = date.rfind("-");
 
+	// std::cout << "left_split_pos " << left_split_pos << std::endl;
+	// std::cout << "right_split_pos " << right_split_pos << std::endl;
+
+	ss.str("");
 	ss << date.substr(0, left_split_pos);
 	ss >> year;
-	ss << date.substr(left_split_pos, right_split_pos);
+	ss.clear();
+	ss.str("");
+	ss << date.substr(left_split_pos + 1, right_split_pos - (left_split_pos + 1));
 	ss >> month;
-	ss << date.substr(right_split_pos, date.size());
+	ss.clear();
+	ss.str("");
+	ss << date.substr(right_split_pos + 1);
 	ss >> day;
+	ss.clear();
+
+		// std::cout << "y " << year << std::endl;
+		// std::cout << "m " << month << std::endl;
+		// std::cout << "d " << day << std::endl;
+		// std::cout << "_current_y "<< _current_y << std::endl;
+		// std::cout << "_current_m "<< _current_m << std::endl;
+		// std::cout << "_current_d "<< _current_d << std::endl;
 
 	if ((_current_m < month && _current_y == year)
 		|| (_current_d < day && _current_m == month && _current_y == year))
+	{
 		return (false);
+	}
+
 	if (_current_y < year)
+	{
 		return (false);
+	}
+
 	if (12 < month || month < 0)
 		return (false);
-	if (m_array[month - 1] < day
+	if (day < 1 || m_array[month - 1] < day
 		|| (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
 						&& m_array[month - 1] + 1 < day))
 		return (false);
@@ -178,18 +200,31 @@ bool BitcoinExchange::is_before_first_record(int y, int m, int d)
 	std::string first_date;
 	std::stringstream ss;
 
+	if (_data.empty())
+		std::cout << "empty!!!!" << std::endl;
 	std::map<std::string, std::string>::iterator it = _data.begin();
 	first_date = it->first;
+	std::cout << "first_date " << first_date << std::endl;
+
+	// std::cout << "aaaaa" << std::endl;
 
 	int left_split_pos = first_date.find("-");
 	int right_split_pos = first_date.rfind("-");
 
+	// std::cout << "aaaaa" << std::endl;
+
+	ss.str("");
 	ss << first_date.substr(0, left_split_pos);
 	ss >> f_year;
-	ss << first_date.substr(left_split_pos, right_split_pos);
+	ss.clear();
+	ss.str("");
+	ss << first_date.substr(left_split_pos + 1, right_split_pos - (left_split_pos + 1));
 	ss >> f_month;
-	ss << first_date.substr(right_split_pos, first_date.size());
+	ss.clear();
+	ss.str("");
+	ss << first_date.substr(right_split_pos + 1, first_date.size());
 	ss >> f_day;
+	ss.clear();
 	if (y < f_year)
 		return (true);
 	if (m < f_month)
