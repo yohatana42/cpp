@@ -17,39 +17,33 @@ BitcoinExchange::~BitcoinExchange() {}
 
 void BitcoinExchange::exec(std::string filename)
 {
-	// _csv = read_data();
-	// if (!_csv)
-	// {
-	// 	std::cout << "open failed [data.csv]" << std::endl;
-	// 	return ;
-	// }
-
-
-	if (!validate_input(filename))
-		return ;
-
+	// initにするべき
+	get_current_date();
+	if (!read_data())
+		return (print_error("Error :failed open data.csv"));
+	if (!can_open_input(filename))
+		return (print_error("Error :failed open input file"));
 
 	std::fstream stream;
 	stream.open(filename.c_str());
 	if (!stream)
-	{
-		std::cout << "file open failed!" << std::endl;
-		return ;
-	}
+		return (print_error("Error :failed open input file"));
 
 	std::string line;
+	int i = 0;
 	while (std::getline(stream, line))
 	{
-		std::cout << line << std::endl;
-		if (!validate_format(line))
+		if (i == 0)
 		{
+			++i;
 			continue ;
 		}
-
-
+		std::cout << line << std::endl;
+		if (!validate_format(line))
+			continue ;
+		++i;
 	}
 	stream.close();
-	_csv.close();
 
 	// 存在しない日付は一番近い前の日付にする
 	// ただしビットコインの誕生が2008年とかそのへんなのでそれ以前は弾く
@@ -72,32 +66,43 @@ void BitcoinExchange::exec(std::string filename)
 		// 出力する
 }
 
-bool BitcoinExchange::validate_input(std::string filename)
+bool BitcoinExchange::can_open_input(std::string filename)
 {
 	std::fstream s;
 
 	s.open(filename.c_str());
 	if (!s)
-	{
-		std::cout << "file open failed!" << std::endl;
 		return (false);
-	}
 	s.close();
 	return (true);
 }
 
-// mapを返してcloseしたほうが良い
-// std::fstream BitcoinExchange::read_data()
-// {
-// 	std::fstream data;
+bool BitcoinExchange::read_data()
+{
+	std::fstream stream;
+	std::string line;
 
-// 	data.open("Data.csv");
-// 	return (data);
-// }
+	stream.open("data.csv");
+	if (!stream)
+		return (false);
+
+	int i = 0;
+	int split_pos;
+	while (std::getline(stream, line))
+	{
+		if (i == 0)
+			continue ;
+		split_pos = line.find(",");
+		_data.insert(std::make_pair(line.substr(0, split_pos)
+									,line.substr(split_pos + 1, line.size())));
+		++i;
+	}
+	stream.close();
+	return (true);
+}
 
 bool BitcoinExchange::validate_format(std::string line)
 {
-	// split '|'
 	int pipe_pos = line.find("|");
 	int pipe_pos2 = line.rfind("|");
 	if (pipe_pos == (int)std::string::npos || pipe_pos != pipe_pos2)
@@ -123,18 +128,25 @@ bool BitcoinExchange::validate_format(std::string line)
 bool BitcoinExchange::validate_date(std::string date)
 {
 	(void)date;
-	// int year;
-	// int month;
-	// int day;
+	std::string year;
+	std::string month;
+	std::string day;
 
-	// // 現在の年を取得する
-	// time_t t;
-	// t = time(NULL);
-	// tm *d = localtime(&t);
+	// -で区切る
+	int left_split_pos = date.find("-");
+	int right_split_pos = date.rfind("-");
+
+	year = date.substr(0, left_split_pos);
+	month = date.substr(left_split_pos, right_split_pos);
+	day = date.substr(right_split_pos, date.size());
+
+	// 年がcsvデータの一番最初の日付よりも前か、実行時の年以降なら弾く
+	// csvの一番最初のデータはイテレーターのstartで取れる　多分
+
+	// 月の範囲が１〜１２であること
+	// 日付の範囲が月に沿った範囲であること
 
 
-	// 年月日に分ける
-	// 年が2007年以前、もしくは実行時の年以降なら弾く
 	return (true);
 }
 
@@ -150,7 +162,7 @@ bool BitcoinExchange::validate_value(std::string value)
 		std::cout << "Error: not a positive number." << std::endl;
 		return (false);
 	}
-	if (std::numeric_limits<int>::max() < val)
+	if (1000 < val)
 	{
 		std::cout << "Error: too large a number." << std::endl;
 		return (false);
@@ -169,4 +181,22 @@ void BitcoinExchange::trim_space(std::string& line)
 		line.erase(space_pos, 1);
 		space_pos = line.find(" ");
 	}
+}
+
+void BitcoinExchange::get_current_date()
+{
+	// // 現在の年を取得する
+	time_t t;
+
+	t = time(NULL);
+	tm *d = localtime(&t);
+
+	_current_y = d->tm_year + 1900;
+	_current_m = d->tm_mon + 1;
+	_current_d = d->tm_mday;
+}
+
+void BitcoinExchange::print_error(std::string str)
+{
+	std::cout << str << std::endl;
 }

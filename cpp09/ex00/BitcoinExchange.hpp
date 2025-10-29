@@ -7,6 +7,7 @@
 #include <ctime>
 #include <sstream>
 #include <limits>
+#include <map>
 
 class BitcoinExchange
 {
@@ -17,15 +18,18 @@ class BitcoinExchange
 		~BitcoinExchange();
 		void exec(std::string filename);
 	private:
-		bool validate_input(std::string filename);
-		// bool read_input(std::string filename);
-		// bool read_data();
-		// std::fstream read_data();
+		bool can_open_input(std::string filename);
+		bool read_data();
 		bool validate_format(std::string line);
 		bool validate_date(std::string date);
 		bool validate_value(std::string line);
-		std::fstream _csv;
 		void trim_space(std::string& line);
+		void get_current_date();
+		int _current_y;
+		int _current_m;
+		int _current_d;
+		std::map<std::string, std::string> _data;
+		void print_error(std::string str);
 };
 
  #endif
