@@ -5,6 +5,8 @@
 #include <string>
 #include <fstream>
 #include <ctime>
+#include <sstream>
+#include <limits>
 
 class BitcoinExchange
 {
@@ -18,10 +20,12 @@ class BitcoinExchange
 		bool validate_input(std::string filename);
 		// bool read_input(std::string filename);
 		// bool read_data();
-		std::fstream BitcoinExchange::read_data();
+		// std::fstream read_data();
 		bool validate_format(std::string line);
 		bool validate_date(std::string date);
+		bool validate_value(std::string line);
 		std::fstream _csv;
+		void trim_space(std::string& line);
 };
 
  #endif
