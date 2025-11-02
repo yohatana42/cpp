@@ -6,11 +6,11 @@
 #    By: yohatana <yohatana@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/28 16:25:17 by yohatana          #+#    #+#              #
-#    Updated: 2025/10/21 14:50:28 by yohatana         ###   ########.fr        #
+#    Updated: 2025/11/02 17:13:55 by yohatana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ex01
+NAME = RPN
 SRCS = \
 		main.cpp\
 		RPN.cpp

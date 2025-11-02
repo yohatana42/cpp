@@ -2,18 +2,13 @@
 
 int main(int argc, char**argv)
 {
-	// 引数が1個
-
-	// validate
-		// 最初の数値が2つ連続している必要あり
-		// +-/*以外の記号は認めない
-		// スペース区切りで要素を打ち込む
-
-	// 逆ポーランド記法という計算方法がある
-	// 1+2*3 -> 123+* のように記載できる
-	// アルゴリズムと相性がいいらしい
-	// あと多分スタック使う
-
+	if (argc != 2)
+	{
+		std::cerr << "Error: invalid argument" << std::endl;
+		return (1);
+	}
+	RPN rpn;
+	rpn.exec(argv[1]);
 
 	return (0);
 }
