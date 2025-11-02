@@ -59,6 +59,11 @@ void RPN::exec(std::string input)
 			_stack.push(new_content);
 		}
 	}
+	if (_stack.size() != 1)
+	{
+		std::cerr << "Error" << std::endl;
+		return;
+	}
 	std::cout << _stack.top() << std::endl;
 }
 
