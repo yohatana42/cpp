@@ -38,32 +38,11 @@ void BitcoinExchange::exec(std::string filename)
 			++i;
 			continue ;
 		}
-		std::cout << line << std::endl;
 		if (!validate_format(line))
 			continue ;
-		++i;
+		calculate_exchange_value(line);
 	}
 	stream.close();
-
-	// 存在しない日付は一番近い前の日付にする
-	// ただしビットコインの誕生が2008年とかそのへんなのでそれ以前は弾く
-	// 明日（実行時の）を入力された場合も弾く
-
-	// 入力ファイルを読み取る
-		// 入力ファイルが存在しない、読み取れない場合エラー出力して終了
-
-	// 一行ずつ処理
-		// パイプで区切る
-			// パイプが存在しない場合はエラー出力して次の行
-			// 数値がintの正の数に収まらない場合、エラー出力して次の行
-
-		// 日付でdatabase内部の検索
-			// カレンダーに存在する日付かどうかチェックする（9999/99/99とかうるう年とか）
-			// 存在する日付はそのまま為替値を取得
-			// 存在しない場合は一番近い日付（未来に寄せる？）を取得
-
-		// 掛け算する
-		// 出力する
 }
 
 bool BitcoinExchange::can_open_input(std::string filename)
@@ -88,14 +67,21 @@ bool BitcoinExchange::read_data()
 
 	int i = 0;
 	int split_pos;
+
+	std::string key;
+	std::string val;
 	while (std::getline(stream, line))
 	{
 		if (i == 0)
+		{
+			++i;
 			continue ;
+		}
 		split_pos = line.find(",");
-		_data.insert(std::make_pair(line.substr(0, split_pos)
-									,line.substr(split_pos + 1, line.size() - (split_pos + 1))));
-		++i;
+		key = line.substr(0, split_pos);
+		val = line.substr(split_pos + 1, line.size() - (split_pos + 1));
+		_data.insert(std::make_pair(key, val));
+		std::getline(stream, line);
 	}
 	stream.close();
 	return (true);
@@ -145,9 +131,6 @@ bool BitcoinExchange::validate_date(std::string date)
 	int left_split_pos = date.find("-");
 	int right_split_pos = date.rfind("-");
 
-	// std::cout << "left_split_pos " << left_split_pos << std::endl;
-	// std::cout << "right_split_pos " << right_split_pos << std::endl;
-
 	ss.str("");
 	ss << date.substr(0, left_split_pos);
 	ss >> year;
@@ -161,31 +144,18 @@ bool BitcoinExchange::validate_date(std::string date)
 	ss >> day;
 	ss.clear();
 
-		// std::cout << "y " << year << std::endl;
-		// std::cout << "m " << month << std::endl;
-		// std::cout << "d " << day << std::endl;
-		// std::cout << "_current_y "<< _current_y << std::endl;
-		// std::cout << "_current_m "<< _current_m << std::endl;
-		// std::cout << "_current_d "<< _current_d << std::endl;
-
 	if ((_current_m < month && _current_y == year)
 		|| (_current_d < day && _current_m == month && _current_y == year))
-	{
 		return (false);
-	}
 
 	if (_current_y < year)
-	{
 		return (false);
-	}
-
 	if (12 < month || month < 0)
 		return (false);
 	if (day < 1 || m_array[month - 1] < day
 		|| (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
 						&& m_array[month - 1] + 1 < day))
 		return (false);
-
 	if (is_before_first_record(year, month, day))
 		return (false);
 
@@ -200,28 +170,18 @@ bool BitcoinExchange::is_before_first_record(int y, int m, int d)
 	std::string first_date;
 	std::stringstream ss;
 
-	if (_data.empty())
-		std::cout << "empty!!!!" << std::endl;
 	std::map<std::string, std::string>::iterator it = _data.begin();
 	first_date = it->first;
-	std::cout << "first_date " << first_date << std::endl;
-
-	// std::cout << "aaaaa" << std::endl;
 
 	int left_split_pos = first_date.find("-");
 	int right_split_pos = first_date.rfind("-");
 
-	// std::cout << "aaaaa" << std::endl;
-
-	ss.str("");
 	ss << first_date.substr(0, left_split_pos);
 	ss >> f_year;
 	ss.clear();
-	ss.str("");
 	ss << first_date.substr(left_split_pos + 1, right_split_pos - (left_split_pos + 1));
 	ss >> f_month;
 	ss.clear();
-	ss.str("");
 	ss << first_date.substr(right_split_pos + 1, first_date.size());
 	ss >> f_day;
 	ss.clear();
@@ -282,4 +242,42 @@ void BitcoinExchange::get_current_date()
 void BitcoinExchange::print_error(std::string str)
 {
 	std::cout << str << std::endl;
+}
+
+bool BitcoinExchange::calculate_exchange_value(std::string line)
+{
+	int pipe_pos = line.find("|");
+	trim_space(line);
+	std::string input_date = line.substr(0, pipe_pos - 1);
+	std::string temp_val = line.substr(pipe_pos, line.size() - pipe_pos);
+
+	double input_val;
+	std::stringstream ss;
+	ss << temp_val;
+	ss >> input_val;
+	ss.clear();
+
+	std::string near_date;
+	std::map<std::string, std::string>::iterator it = _data.find(input_date);
+	if (it == _data.end())
+	{
+		near_date = serach_near_date(input_date);
+		it = _data.find(near_date);
+	}
+
+	double data_val;
+
+	ss << it->second;
+	ss >> data_val;
+	ss.clear();
+
+	std::cout << input_date << " => " << input_val << " = " << input_val * data_val << std::endl;;
+	return (true);
+}
+
+std::string BitcoinExchange::serach_near_date(std::string input_date)
+{
+	std::map<std::string, std::string>::iterator it = _data.upper_bound(input_date);
+	--it;
+	return (it->first);
 }

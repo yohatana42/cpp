@@ -31,6 +31,8 @@ class BitcoinExchange
 		std::map<std::string, std::string> _data;
 		void print_error(std::string str);
 		bool is_before_first_record(int y, int m, int d);
+		bool calculate_exchange_value(std::string line);
+		std::string serach_near_date(std::string date);
 };
 
  #endif
