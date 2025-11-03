@@ -2,7 +2,13 @@
 
 int main(int argc, char**argv)
 {
-	// 正の数のみを受け付ける
+	if (argc == 1)
+	{
+		std::cerr << "Error" << std::endl;
+		return (1);
+	}
 
+	PmergeMe merg;
+	merg.exec(argv);
 	return (0);
 }
