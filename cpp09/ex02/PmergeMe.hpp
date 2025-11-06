@@ -7,6 +7,12 @@
 #include <vector>
 #include <cstdlib>
 
+typedef struct s_pair
+{
+	int big;
+	int small;
+}	t_pair;
+
 class PmergeMe
 {
 	public:
@@ -18,8 +24,14 @@ class PmergeMe
 	private:
 		bool _validate_input(char **argv);
 		void _create_deque(char **argv);
+		void _create_vec(char **argv);
+		std::vector<int> _sort(std::vector<int> vec);
 		std::deque<int> _deq;
 		std::vector<int> _vec;
+		void FordJohnsonSort(std::vector<int> vec);
+		void binaryInsert(std::vector<int> vec, int num);
+		std::vector<int> mekeOrderInsert(std::vector<int> jacob_seq);
+		std::vector<int> makeJacobSeq(int n);
 };
 
 #endif
