@@ -26,7 +26,17 @@ void PmergeMe::exec(char **argv)
 	_create_deque(argv);
 	_create_vec(argv);
 
-	makeJacobSeq(21);
+	// std::vector<int> jacob_array;
+	// jacob_array.reserve(argc - 1);
+	// jacob_array = _makeJacobSeq(argc - 1);
+	// _mekeOrderInsert(jacob_array);
+
+	// std::cout << "====== jacob_array ======" << std::endl;
+	// for (int i = 0; i < argc - 1; i++)
+	// {
+	// 	std::cout << "jacob :" << jacob_array[i] << std::endl;
+	// }
+	// std::cout << "============" << std::endl;
 
 	// sort
 	_sort(_vec);
@@ -40,8 +50,6 @@ void PmergeMe::exec(char **argv)
 
 bool PmergeMe::_validate_input(char **argv)
 {
-	// 正の数のみを受け付ける
-	// 文字種類チェック
 	for(int i = 1; argv[i] != NULL; i++)
 	{
 		for (int j =0; argv[i][j] != '\0'; j++)
@@ -52,18 +60,23 @@ bool PmergeMe::_validate_input(char **argv)
 			}
 		}
 	}
-	// 重複チェック
 	int n = 0;
 	for (int i = 1; argv[i] != NULL; i++)
 	{
 		n = i + 1;
-		while (argv[n + 1])
+		while (argv[n] != '\0')
 		{
-			if (argv[i] == argv[n])
-				return (true);
+			if (std::atoi(argv[i]) == std::atoi(argv[n]))
+			{
+				return (false);
+			}
 			++n;
 		}
 	}
+
+	// TODO int_max < argv[i]の場合
+
+
 	return (true);
 }
 
@@ -87,42 +100,7 @@ void PmergeMe::_create_vec(char **argv)
 	}
 }
 
-void PmergeMe::FordJohnsonSort(std::vector<int> vec)
-{
-	std::vector<int> winners;
-	std::vector<int> losers;
-
-	int n = vec.size();
-	if (n <= 1)
-		return ;
-	if (n % 2 == 1)
-	{
-		int extra = vec[vec.size() - 1];
-		vec.pop_back();
-		FordJohnsonSort(vec);
-		binaryInsert(vec, extra);
-		return ;
-	}
-
-	int specialLoser;
-	if (vec[0] < vec[1])
-	{
-		winners.push_back(vec[1]);
-		specialLoser = vec[0];
-	}
-	else
-	{
-		winners.push_back(vec[0]);
-		specialLoser = vec[1];
-	}
-
-	// for (int i = 0;)
-	// {
-
-	// }
-}
-
-std::vector<int> PmergeMe::makeJacobSeq(int n)
+std::vector<int> PmergeMe::_makeJacobSeq(int n)
 {
 	std::vector<int> seq;
 
@@ -146,10 +124,27 @@ std::vector<int> PmergeMe::makeJacobSeq(int n)
 // [1, 3, 2, 4, 6 ,5]という配列があった場合、
 //  1  3  2  5  4  6の順番で挿入していく（らしい）
 // この挿入するインデックスの順番を返したい（この場合は0,2,1,4,3,5の配列になる）
-std::vector<int> PmergeMe::mekeOrderInsert(std::vector<int> jacob_seq)
+std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, std::vector<int> losers)
 {
-	std::vector<int> seq;
-	return (seq);
+	(void)jacob_seq;
+	(void)losers;
+
+	std::vector<int> order;
+	// 挿入する配列の長さが必要
+	std::vector<int>::iterator point = std::upper_bound(jacob_seq.begin(), jacob_seq.end(), losers.size());
+
+	std::cout << "losers.size() :" << losers.size() << std::endl;
+	std::cout << "point "<< *point << std::endl;
+	size_t index = std::distance(jacob_seq.begin(), point);
+	std::cout << "index :" << index << " jacob_seq :"<< jacob_seq[index] << std::endl;
+
+	// push_back(index)したい
+	for (int i = 0; (int)i < losers.size();i++)
+	{
+		// うまく入るのか？これ
+	}
+
+	return (order);
 }
 
 
@@ -185,6 +180,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 		{
 			// 余りはとっておく（smallに入れたい）
 			pair.small = vec[i];
+			// bigを0にすると問題がありそうなので考えるべき
 			winners.push_back(pair);
 		}
 		else
@@ -196,13 +192,28 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	}
 
 	// bigのみを取り出す
-	// 2こずつの塊にする
+	// _sort(bigs_array)
+	// ↑これでソートされた大の配列が帰ってくる（多分）
 
 	// bigのみソートする
 	// ソートしたbigにあわせてsmallの配列を並び替える
 
+	losers.push_back(9);
+	losers.push_back(7);
+	losers.push_back(2);
+	losers.push_back(1);
+	losers.push_back(3);
+	losers.push_back(8);
+
+	// small配列の挿入順を決める
+	std::vector<int> jacob_array;
+	jacob_array.reserve(size);
+	jacob_array = _makeJacobSeq(size);
+	_mekeOrderInsert(jacob_array, losers);
+
 	// bigの配列にsmallを挿入する
 	// ヤコブスタール配列を二分探索の基準にする
+	// upper_bound(挿入したい数値)にするといい感じの位置が取れる…？
 
 	return (vec);
 }

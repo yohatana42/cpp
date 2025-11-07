@@ -6,6 +6,7 @@
 #include <deque>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 typedef struct s_pair
 {
@@ -28,10 +29,10 @@ class PmergeMe
 		std::vector<int> _sort(std::vector<int> vec);
 		std::deque<int> _deq;
 		std::vector<int> _vec;
-		void FordJohnsonSort(std::vector<int> vec);
-		void binaryInsert(std::vector<int> vec, int num);
-		std::vector<int> mekeOrderInsert(std::vector<int> jacob_seq);
-		std::vector<int> makeJacobSeq(int n);
+		// void FordJohnsonSort(std::vector<int> vec);
+		// void binaryInsert(std::vector<int> vec, int num);
+		std::vector<int> _mekeOrderInsert(std::vector<int> jacob_seq, std::vector<int> losers);
+		std::vector<int> _makeJacobSeq(int n);
 };
 
 #endif
