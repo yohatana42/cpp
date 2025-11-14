@@ -227,6 +227,11 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	sorted = _sort(winners);
 	// ↑これでソートされた大の配列が帰ってくる
 	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
+	for (int i = 0; i < (int)pairs.size();i++)
+	{
+		// ソートされたbigをもとにうまいことやる
+		// losers.push_back();
+	}
 
 	// ソートしたbigにあわせてsmallの配列を並び替える
 
