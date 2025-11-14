@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <algorithm>
 
+// あまりの場合0埋めするとまずいのでポインタにするべきか？
+// 余りフラグを使うか？（big参照しないように）
 typedef struct s_pair
 {
 	int big;
@@ -31,7 +33,7 @@ class PmergeMe
 		std::vector<int> _vec;
 		// void FordJohnsonSort(std::vector<int> vec);
 		// void binaryInsert(std::vector<int> vec, int num);
-		std::vector<int> _mekeOrderInsert(std::vector<int> jacob_seq, std::vector<int> losers);
+		std::vector<int> _mekeOrderInsert(std::vector<int> jacob_seq, int size);
 		std::vector<int> _makeJacobSeq(int n);
 };
 
