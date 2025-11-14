@@ -259,3 +259,5 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 
 	return (vec);
 }
+
+// ex00 めっちゃでかい数を入れてinfになればオッケー
