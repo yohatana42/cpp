@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
+#include <limits>
 
 // あまりの場合0埋めするとまずいのでポインタにするべきか？
 // 余りフラグを使うか？（big参照しないように）

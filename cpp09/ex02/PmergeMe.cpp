@@ -73,6 +73,10 @@ bool PmergeMe::_validate_input(char **argv)
 	int n = 0;
 	for (int i = 1; argv[i] != NULL; i++)
 	{
+		if (std::atoi(argv[i]) == 0)
+			{
+				return (false);
+			}
 		n = i + 1;
 		while (argv[n] != '\0')
 		{
@@ -136,12 +140,14 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 
 	// 何かがおかしい
 	std::cout << "_mekeOrderInsert size " << size << std::endl;
-
+	std::cout << "acob_seq.size() " << jacob_seq.size() << std::endl;
 
 
 	std::vector<int> order;
 	std::vector<int>::iterator point = std::upper_bound(jacob_seq.begin(), jacob_seq.end(), size);
 	size_t index = std::distance(jacob_seq.begin(), point);
+
+	std::cout << "jacob_seq[index] " << jacob_seq[index] << std::endl;
 
 	if (size == 0)
 		return (order);
@@ -153,21 +159,33 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 	int i = 1;
 	int start = 0;
 	int end = 0;
+
+	// やっぱここでsize分すべての順序を決めたほうが良さそう
 	while (i < (int)index)
 	{
 		start = jacob_seq[i - 1] + 1;
 		end = jacob_seq[i];
 		while (start <= end)
 		{
-			order.push_back(end);
+			order.push_back(end - 1);
 			--end;
 		}
 		i++;
 	}
 
+	// なんかここがキモい気がする
+	std::cout << "###############" << std::endl;
+	for (size_t i = 0; i < order.size(); i++)
+	{
+		std::cout << "order[i] " << order[i] << std::endl;
+	}
+	std::cout << "###############" << std::endl;
+
 	return (order);
 }
 
+// 余りがうまく挿入されない
+// オーダーインサートの数がlosersよりも短いときにバグる
 std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 {
 	int size = vec.size();
@@ -215,11 +233,16 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	// 	std::cout << "samll " << pairs[i].small << std::endl;
 	// }
 
+	int remainder = 0;
 	// bigのみを取り出す
 	for (int i = 0; i < (int)pairs.size();i++)
 	{
 		if (pairs[i].big != 0)
 			winners.push_back(pairs[i].big);
+		else
+		{
+			remainder = pairs[i].small;
+		}
 	}
 
 	std::cout << "======" << std::endl;
@@ -262,6 +285,8 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			j++;
 		}
 	}
+	if (remainder != 0)
+		losers.push_back(remainder);
 
 	for (size_t i = 0; i < losers.size();i++)
 	{
@@ -271,8 +296,10 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	// ヤコブスタール配列の作成
 	std::vector<int> jacob_array;
 	std::vector<int> order_insert;
-	jacob_array.reserve(losers.size());
-	jacob_array = _makeJacobSeq(losers.size());
+	// jacob_array.reserve(losers.size());
+	// jacob_array = _makeJacobSeq(losers.size());
+		jacob_array.reserve(size);
+	jacob_array = _makeJacobSeq(size);
 
 	for (int i = 0;i< (int)jacob_array.size();i++)
 	{
@@ -288,10 +315,11 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	}
 
 	// losersが全て挿入されるまで続く
+	// order_insertの順番で入れるが、余りがあるとなんかずれちゃう？
 	for (size_t i = 0; i < losers.size(); i++)
 	{
-		std::cout << "i " << i << std::endl;
-		int pairs_big;
+		std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
+		int pairs_big = 0;
 		// losers[order_insert[i]]のペアのbigを探す
 		for (size_t j = 0; j < sorted_pairs.size(); j++)
 		{
@@ -299,15 +327,28 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			if (losers[order_insert[i]] == sorted_pairs[j].small)
 			{
 				pairs_big = sorted_pairs[j].big;
+				std::cout << "pairs_big " << pairs_big << std::endl;
 			}
 		}
 
-		// ペアのbigをもとにsortedのbigのイテレータを取得
-		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
+		std::vector<int>::iterator insert_point;
+		// ペアが存在しない場合は全探索する
+		if (pairs_big == 0)
+		{
+			insert_point =
+			std::lower_bound(sorted.begin(), sorted.end(), losers[order_insert[i]]);
+		}
+		else
+		{
+			// コレ二分探索になるのか・・・？
+			// ペアのbigをもとにsortedのbigのイテレータを取得
+			std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
 
-		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
-		std::vector<int>::iterator insert_point =
-			std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
+			// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
+			insert_point =
+				std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
+		}
+
 		// bigの配列にsmallを挿入する
 		sorted.insert(insert_point, losers[order_insert[i]]);
 	}
