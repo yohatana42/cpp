@@ -140,14 +140,20 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 
 	// 何かがおかしい
 	std::cout << "_mekeOrderInsert size " << size << std::endl;
-	std::cout << "acob_seq.size() " << jacob_seq.size() << std::endl;
+	std::cout << "jacob_seq.size() " << jacob_seq.size() << std::endl;
 
 
 	std::vector<int> order;
-	std::vector<int>::iterator point = std::upper_bound(jacob_seq.begin(), jacob_seq.end(), size);
-	size_t index = std::distance(jacob_seq.begin(), point);
+	int index = 0;
+	// std::vector<int>::iterator point = std::upper_bound(jacob_seq.begin(), jacob_seq.end(), size);
+	// size_t index = std::distance(jacob_seq.begin(), point);
+	for (size_t i = 0;i < jacob_seq.size();i++)
+	{
+		if (jacob_seq[i] > size)
+			index = i;
+	}
 
-	std::cout << "jacob_seq[index] " << jacob_seq[index] << std::endl;
+	std::cout << "index " << index << " jacob_seq[index] " << jacob_seq[index] << std::endl;
 
 	if (size == 0)
 		return (order);
@@ -163,15 +169,19 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 	// やっぱここでsize分すべての順序を決めたほうが良さそう
 	while (i < (int)index)
 	{
-		start = jacob_seq[i - 1] + 1;
+		start = jacob_seq[i - 1] + 1; // なんでコレ＋１してるのか
 		end = jacob_seq[i];
-		while (start <= end)
+		while (start < end)
 		{
-			order.push_back(end - 1);
+			order.push_back(end);
 			--end;
 		}
 		i++;
 	}
+	// if (order.size() != size)
+	// {
+	// 	// 残りを詰める必要あり　どうやって…？
+	// }
 
 	// なんかここがキモい気がする
 	std::cout << "###############" << std::endl;
@@ -186,6 +196,7 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 
 // 余りがうまく挿入されない
 // オーダーインサートの数がlosersよりも短いときにバグる
+// オーダーインサートが悪いと思う　知らんけど
 std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 {
 	int size = vec.size();
@@ -257,12 +268,12 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	sorted = _sort(winners);
 
 	// sorted check
-	std::cout << "-----------" << std::endl;
-	for (int i = 0; i < (int)sorted.size();i++)
-	{
-		std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
-	}
-	std::cout << "-----------" << std::endl;
+	// std::cout << "-----------" << std::endl;
+	// for (int i = 0; i < (int)sorted.size();i++)
+	// {
+	// 	std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
+	// }
+	// std::cout << "-----------" << std::endl;
 
 
 	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
@@ -294,6 +305,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	}
 
 	// ヤコブスタール配列の作成
+	// どっちのsizeを見るべき？
 	std::vector<int> jacob_array;
 	std::vector<int> order_insert;
 	// jacob_array.reserve(losers.size());
