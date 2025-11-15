@@ -24,7 +24,12 @@ void PmergeMe::exec(char **argv)
 	}
 
 	_create_deque(argv);
+
+
+	// 計測開始
 	_create_vec(argv);
+	std::vector<int> sorted = _sort(_vec);
+	// 計測終了
 
 	// std::vector<int> jacob_array;
 	// jacob_array.reserve(argc - 1);
@@ -38,10 +43,15 @@ void PmergeMe::exec(char **argv)
 	// }
 	// std::cout << "============" << std::endl;
 
-	// sort
-	_sort(_vec);
 
 	// print
+	std::cout << "========= result ===========" << std::endl;
+	for (int i = 0; i < (int)sorted.size();i++)
+	{
+		std::cout << sorted[i] << " ";
+		if (i == (int)sorted.size() - 1)
+			std::cout << std::endl;
+	}
 
 	// dequeとvectorで秒数を比較すると違って嬉しいねーということらしい
 	// <sys/time.h> の gettimeofday() を使う
@@ -124,6 +134,11 @@ std::vector<int> PmergeMe::_makeJacobSeq(int n)
 std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size)
 {
 
+	// 何かがおかしい
+	std::cout << "_mekeOrderInsert size " << size << std::endl;
+
+
+
 	std::vector<int> order;
 	std::vector<int>::iterator point = std::upper_bound(jacob_seq.begin(), jacob_seq.end(), size);
 	size_t index = std::distance(jacob_seq.begin(), point);
@@ -155,15 +170,6 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 
 std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 {
-	/*
-		二個の要素をペア（構造体）にする
-		（1個になるまで続ける）
-
-		小の配列を大の配列に合わせる
-		小を大の配列に挿入していく
-
-		完成
-	*/
 	int size = vec.size();
 	if (size == 1)
 	{
@@ -223,41 +229,88 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	}
 	std::cout << "======" << std::endl;
 
+	// ソートされた大の配列が帰ってくる
 	std::vector<int> sorted;
 	sorted = _sort(winners);
-	// ↑これでソートされた大の配列が帰ってくる
-	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
-	for (int i = 0; i < (int)pairs.size();i++)
+
+	// sorted check
+	std::cout << "-----------" << std::endl;
+	for (int i = 0; i < (int)sorted.size();i++)
 	{
-		// ソートされたbigをもとにうまいことやる
-		// losers.push_back();
+		std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
+	}
+	std::cout << "-----------" << std::endl;
+
+
+	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
+	// ソートしたbigにあわせてsmallの配列を並び替える
+	std::vector<t_pair> sorted_pairs;
+	int j;
+	for (int i = 0; i < (int)sorted.size();i++)
+	{
+		j = 0;
+		while (j < (int)pairs.size())
+		{
+			if (sorted[i] == pairs[j].big)
+			{
+				sorted_pairs.push_back(pairs[j]);
+				losers.push_back(pairs[j].small);
+
+				std::cout << "big " << pairs[j].big << std::endl;
+				std::cout << "small " << pairs[j].small << std::endl;
+			}
+			j++;
+		}
 	}
 
-	// ソートしたbigにあわせてsmallの配列を並び替える
+	for (size_t i = 0; i < losers.size();i++)
+	{
+		std::cout << "losers " << losers[i] << std::endl;
+	}
 
-	// small配列の挿入順を決める
+	// ヤコブスタール配列の作成
 	std::vector<int> jacob_array;
 	std::vector<int> order_insert;
-	jacob_array.reserve(size);
-	jacob_array = _makeJacobSeq(size);
+	jacob_array.reserve(losers.size());
+	jacob_array = _makeJacobSeq(losers.size());
 
-	// for (int i = 0;i< (int)jacob_array.size();i++)
-	// {
-	// 	std::cout << "jacob_array i:" << i << " content:" << jacob_array[i] << std::endl;
-	// }
+	for (int i = 0;i< (int)jacob_array.size();i++)
+	{
+			std::cout << "jacob_array i:" << i << " content:" << jacob_array[i] << std::endl;
+	}
 
+	// small配列の挿入順を決める
 	order_insert = _mekeOrderInsert(jacob_array, losers.size());
 
-	// for (int i = 0;i< (int)order_insert.size();i++)
-	// {
-	// 	std::cout << "order insert i:" << i << " content:" << order_insert[i] << std::endl;
-	// }
+	for (int i = 0;i< (int)order_insert.size();i++)
+	{
+		std::cout << "order insert i:" << i << " content:" << order_insert[i] << std::endl;
+	}
 
-	// bigの配列にsmallを挿入する
-	// ヤコブスタール配列を二分探索の基準にする
-	// upper_bound(挿入したい数値)にするといい感じの位置が取れる…？
+	// losersが全て挿入されるまで続く
+	for (size_t i = 0; i < losers.size(); i++)
+	{
+		std::cout << "i " << i << std::endl;
+		int pairs_big;
+		// losers[order_insert[i]]のペアのbigを探す
+		for (size_t j = 0; j < sorted_pairs.size(); j++)
+		{
+			std::cout << "j " << j << std::endl;
+			if (losers[order_insert[i]] == sorted_pairs[j].small)
+			{
+				pairs_big = sorted_pairs[j].big;
+			}
+		}
 
-	return (vec);
+		// ペアのbigをもとにsortedのbigのイテレータを取得
+		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
+
+		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
+		std::vector<int>::iterator insert_point =
+			std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
+		// bigの配列にsmallを挿入する
+		sorted.insert(insert_point, losers[order_insert[i]]);
+	}
+
+	return (sorted);
 }
-
-// ex00 めっちゃでかい数を入れてinfになればオッケー
