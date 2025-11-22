@@ -217,24 +217,8 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			}
 		}
 
-		std::vector<int>::iterator insert_point;
-		// ペアが存在しない場合は全探索する
-		if (pairs_big == 0)
-		{
-			// std::cout << "order_insert[i] " << order_insert[i] << std::endl;
-			insert_point =
-			std::lower_bound(sorted.begin(), sorted.end(), losers[order_insert[i]]);
-		}
-		else
-		{
-			// コレ二分探索になるのか・・・？
-			// ペアのbigをもとにsortedのbigのイテレータを取得
-			std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
-
-			// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
-			insert_point =
-				std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
-		}
+		std::vector<int>::iterator insert_point =
+			_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
 
 		// bigの配列にsmallを挿入する
 		sorted.insert(insert_point, losers[order_insert[i]]);
@@ -261,10 +245,8 @@ std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
 		t_pair pair;
 		if (i == size - 1)
 		{
-			// 余りはとっておく（smallに入れたい）
 			pair.small = vec[i];
 			pair.big = 0;
-			// positive integerは０が入らないので0でよい
 			pairs.push_back(pair);
 		}
 		else
@@ -319,4 +301,29 @@ std::vector<t_pair> PmergeMe::_make_sorted_pairs(std::vector<int> sorted,
 		}
 	}
 	return (sorted_pairs);
+}
+
+std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
+														std::vector<int>& sorted,
+														int target)
+{
+	std::vector<int>::iterator insert_point;
+
+	// ペアが存在しない場合は全探索する
+	if (pairs_big == 0)
+	{
+		insert_point =
+		std::lower_bound(sorted.begin(), sorted.end(), target);
+	}
+	else
+	{
+		// ペアのbigをもとにsortedのbigのイテレータを取得
+		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
+
+		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
+		insert_point =
+			std::lower_bound(sorted.begin(), serch_end, target);
+	}
+
+	return (insert_point);
 }
