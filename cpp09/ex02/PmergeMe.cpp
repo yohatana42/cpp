@@ -139,8 +139,8 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 {
 
 	// 何かがおかしい
-	std::cout << "_mekeOrderInsert size " << size << std::endl;
-	std::cout << "jacob_seq.size() " << jacob_seq.size() << std::endl;
+	// std::cout << "_mekeOrderInsert size " << size << std::endl;
+	// std::cout << "jacob_seq.size() " << jacob_seq.size() << std::endl;
 
 
 	std::vector<int> order;
@@ -153,7 +153,7 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 			index = i;
 	}
 
-	std::cout << "index " << index << " jacob_seq[index] " << jacob_seq[index] << std::endl;
+	// std::cout << "index " << index << " jacob_seq[index] " << jacob_seq[index] << std::endl;
 
 	if (size == 0)
 		return (order);
@@ -178,53 +178,30 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 		}
 
 		// ここがおかしい
-		for (int k = x; k > jacob_seq[j - 1]; --k)
+		int s = size - 1;
+		for (int k = x; k > jacob_seq[j - 1] && (int)order.size() < size; --k)
 		{
-			order.push_back(k);
+			if (size <= jacob_seq[j] && s > jacob_seq[j - 1])
+			{
+				// std::cout << "------------s " << s << std::endl;
+				order.push_back(s);
+				s--;
+			}
+			else
+			{
+				// std::cout << "-------k " << k << std::endl;
+				order.push_back(k);
+			}
 		}
 		j++;
 	}
 
-	if ((int)order.size() != size)
-	{
-		// 残りを詰める必要あり
-		std::cout << "order.size() << size " << order.size() << " " << size << std::endl;
-		int stop_index = jacob_seq[j - 1];
-		std::cout << "stop_index " << stop_index << std::endl;
-		for (int k = size - 1; k > stop_index; --k)
-		{
-			order.push_back(k);
-		}
-	}
-
-/*
-// やっぱここでsize分すべての順序を決めたほうが良さそう
-while (i < (int)index)
-{
-	// なんでコレ＋１してるのか
-	start = jacob_seq[i - 1] + 1;
-	end = jacob_seq[i];
-	while (start < end)
-	{
-			order.push_back(end);
-			--end;
-		}
-		i++;
-	}
-	if (order.size() != size)
-	{
-		// 残りを詰める必要あり
-
-	}
-*/
-
-	// なんかここがキモい気がする
-	std::cout << "###############" << std::endl;
-	for (size_t i = 0; i < order.size(); i++)
-	{
-		std::cout << "order[i] " << order[i] << std::endl;
-	}
-	std::cout << "###############" << std::endl;
+	// std::cout << "###############" << std::endl;
+	// for (size_t i = 0; i < order.size(); i++)
+	// {
+	// 	std::cout << "order[i] " << order[i] << std::endl;
+	// }
+	// std::cout << "###############" << std::endl;
 
 	return (order);
 }
@@ -278,6 +255,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 		std::cout << "big " << pairs[i].big << std::endl;
 		std::cout << "samll " << pairs[i].small << std::endl;
 	}
+	std::cout << "======" << std::endl;
 
 	int remainder = 0;
 	// bigのみを取り出す
@@ -291,12 +269,12 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 		}
 	}
 
-	std::cout << "======" << std::endl;
-	for (int i = 0; i < (int)winners.size();i++)
-	{
-		std::cout << "winners " << winners[i] << std::endl;
-	}
-	std::cout << "======" << std::endl;
+	// std::cout << "======" << std::endl;
+	// for (int i = 0; i < (int)winners.size();i++)
+	// {
+	// 	std::cout << "winners " << winners[i] << std::endl;
+	// }
+	// std::cout << "======" << std::endl;
 
 	// ソートされた大の配列が帰ってくる
 	std::vector<int> sorted;
@@ -325,8 +303,8 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 				sorted_pairs.push_back(pairs[j]);
 				losers.push_back(pairs[j].small);
 
-				// std::cout << "big " << pairs[j].big << std::endl;
-				// std::cout << "small " << pairs[j].small << std::endl;
+				std::cout << "big " << pairs[j].big << std::endl;
+				std::cout << "small " << pairs[j].small << std::endl;
 			}
 			j++;
 		}
@@ -334,10 +312,10 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	if (remainder != 0)
 		losers.push_back(remainder);
 
-	// for (size_t i = 0; i < losers.size();i++)
-	// {
-	// 	std::cout << "losers " << losers[i] << std::endl;
-	// }
+	for (size_t i = 0; i < losers.size();i++)
+	{
+		std::cout << "losers " << losers[i] << std::endl;
+	}
 
 	// ヤコブスタール配列の作成
 	// どっちのsizeを見るべき？
@@ -356,16 +334,16 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	// small配列の挿入順を決める
 	order_insert = _mekeOrderInsert(jacob_array, losers.size());
 
-	// for (int i = 0;i< (int)order_insert.size();i++)
-	// {
-	// 	std::cout << "order insert i:" << i << " content:" << order_insert[i] << std::endl;
-	// }
+	for (int i = 0;i< (int)order_insert.size();i++)
+	{
+		std::cout << "order insert i:" << i << " content:" << order_insert[i] << std::endl;
+	}
 
 	// losersが全て挿入されるまで続く
-	// order_insertの順番で入れるが、余りがあるとなんかずれちゃう？
+	// order_insertの順番で入れる
 	for (size_t i = 0; i < losers.size(); i++)
 	{
-		// std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
+		std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
 		int pairs_big = 0;
 		// losers[order_insert[i]]のペアのbigを探す
 		for (size_t j = 0; j < sorted_pairs.size(); j++)
@@ -374,7 +352,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			if (losers[order_insert[i]] == sorted_pairs[j].small)
 			{
 				pairs_big = sorted_pairs[j].big;
-				// std::cout << "pairs_big " << pairs_big << std::endl;
+				std::cout << "pairs_big " << pairs_big << std::endl;
 			}
 		}
 
@@ -382,6 +360,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 		// ペアが存在しない場合は全探索する
 		if (pairs_big == 0)
 		{
+			std::cout << "order_insert[i] " << order_insert[i] << std::endl;
 			insert_point =
 			std::lower_bound(sorted.begin(), sorted.end(), losers[order_insert[i]]);
 		}
@@ -395,6 +374,8 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			insert_point =
 				std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
 		}
+
+		std::cout << "insert_point " << *insert_point << std::endl;
 
 		// bigの配列にsmallを挿入する
 		sorted.insert(insert_point, losers[order_insert[i]]);
