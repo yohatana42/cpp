@@ -35,6 +35,10 @@ class PmergeMe
 		std::vector<int> _mekeOrderInsert(std::vector<int> jacob_seq, int size);
 		std::vector<int> _makeJacobSeq(int n);
 		std::vector<t_pair> _make_pairs(std::vector<int> vec);
+		std::vector<t_pair> _make_sorted_pairs(std::vector<int> sorted,
+									std::vector<t_pair> pairs,
+									std::vector<int>& losers);
+
 };
 
 #endif

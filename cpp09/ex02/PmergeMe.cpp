@@ -101,6 +101,7 @@ std::vector<int> PmergeMe::_makeJacobSeq(int n)
 {
 	std::vector<int> seq;
 
+	seq.reserve(n);
 	if (n <= 0)
 		return (seq);
 	seq.push_back(0);
@@ -163,70 +164,28 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 {
 	int size = vec.size();
 	if (size == 1)
-	{
 		return (vec);
-	}
 
-	std::vector<t_pair> pairs;
-	std::vector<int> winners;
-	std::vector<int> losers;
+	std::vector<t_pair> pairs = _make_pairs(vec);
 
-	pairs = _make_pairs(vec);
-	// pairs check
-	// for (int i = 0; i < (int)pairs.size();i++)
-	// {
-	// 	std::cout << "======" << std::endl;
-	// 	std::cout << "big " << pairs[i].big << std::endl;
-	// 	std::cout << "samll " << pairs[i].small << std::endl;
-	// }
-	// std::cout << "======" << std::endl;
-
-	int remainder = 0;
 	// bigのみを取り出す
+	int remainder = 0;
+	std::vector<int> winners;
 	for (int i = 0; i < (int)pairs.size();i++)
 	{
 		if (pairs[i].big != 0)
 			winners.push_back(pairs[i].big);
 		else
-		{
 			remainder = pairs[i].small;
-		}
 	}
 
 	// ソートされた大の配列が帰ってくる
-	std::vector<int> sorted;
-	sorted = _sort(winners);
-
-	// sorted check
-	// std::cout << "-----------" << std::endl;
-	// for (int i = 0; i < (int)sorted.size();i++)
-	// {
-	// 	std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
-	// }
-	// std::cout << "-----------" << std::endl;
-
+	std::vector<int> sorted = _sort(winners);
 
 	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
 	// ソートしたbigにあわせてsmallの配列を並び替える
-	std::vector<t_pair> sorted_pairs;
-	int j;
-	for (int i = 0; i < (int)sorted.size();i++)
-	{
-		j = 0;
-		while (j < (int)pairs.size())
-		{
-			if (sorted[i] == pairs[j].big)
-			{
-				sorted_pairs.push_back(pairs[j]);
-				losers.push_back(pairs[j].small);
-
-				// check
-				// std::cout << "big " << pairs[j].big << std::endl;
-				// std::cout << "small " << pairs[j].small << std::endl;
-			}
-			j++;
-		}
-	}
+	std::vector<int> losers;
+	std::vector<t_pair> sorted_pairs = _make_sorted_pairs(sorted, pairs, losers);
 	if (remainder != 0)
 		losers.push_back(remainder);
 
@@ -237,21 +196,12 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	// }
 
 	// ヤコブスタール配列の作成
-	std::vector<int> jacob_array;
-	std::vector<int> order_insert;
-	jacob_array.reserve(size);
-	jacob_array = _makeJacobSeq(size);
+	std::vector<int> jacob_array = _makeJacobSeq(size);
 
 	// small配列の挿入順を決める
-	order_insert = _mekeOrderInsert(jacob_array, losers.size());
+	std::vector<int> order_insert = _mekeOrderInsert(jacob_array, losers.size());
 
-	for (int i = 0;i< (int)order_insert.size();i++)
-	{
-		// std::cout << "order insert i:" << i << " content:" << order_insert[i] << std::endl;
-	}
-
-	// losersが全て挿入されるまで続く
-	// order_insertの順番で入れる
+	// losersが全て挿入されるまでorder_insertの順番で入れる
 	for (size_t i = 0; i < losers.size(); i++)
 	{
 		// std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
@@ -290,6 +240,13 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 		sorted.insert(insert_point, losers[order_insert[i]]);
 	}
 
+	// sorted check
+	// std::cout << "-----------" << std::endl;
+	// for (int i = 0; i < (int)sorted.size();i++)
+	// {
+	// 	std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
+	// }
+	// std::cout << "-----------" << std::endl;
 	return (sorted);
 }
 
@@ -325,5 +282,41 @@ std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
 			pairs.push_back(pair);
 		}
 	}
+
+	// pairs check
+	// for (int i = 0; i < (int)pairs.size();i++)
+	// {
+	// 	std::cout << "======" << std::endl;
+	// 	std::cout << "big " << pairs[i].big << std::endl;
+	// 	std::cout << "samll " << pairs[i].small << std::endl;
+	// }
+	// std::cout << "======" << std::endl;
 	return (pairs);
+}
+
+std::vector<t_pair> PmergeMe::_make_sorted_pairs(std::vector<int> sorted,
+									std::vector<t_pair> pairs,
+									std::vector<int>& losers)
+{
+	std::vector<t_pair> sorted_pairs;
+
+	int j;
+	for (int i = 0; i < (int)sorted.size();i++)
+	{
+		j = 0;
+		while (j < (int)pairs.size())
+		{
+			if (sorted[i] == pairs[j].big)
+			{
+				sorted_pairs.push_back(pairs[j]);
+				losers.push_back(pairs[j].small);
+
+				// check
+				// std::cout << "big " << pairs[j].big << std::endl;
+				// std::cout << "small " << pairs[j].small << std::endl;
+			}
+			j++;
+		}
+	}
+	return (sorted_pairs);
 }
