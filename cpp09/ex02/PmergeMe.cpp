@@ -31,19 +31,6 @@ void PmergeMe::exec(char **argv)
 	std::vector<int> sorted = _sort(_vec);
 	// 計測終了
 
-	// std::vector<int> jacob_array;
-	// jacob_array.reserve(argc - 1);
-	// jacob_array = _makeJacobSeq(argc - 1);
-	// _mekeOrderInsert(jacob_array);
-
-	// std::cout << "====== jacob_array ======" << std::endl;
-	// for (int i = 0; i < argc - 1; i++)
-	// {
-	// 	std::cout << "jacob :" << jacob_array[i] << std::endl;
-	// }
-	// std::cout << "============" << std::endl;
-
-
 	// print
 	std::cout << "========= result ===========" << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
@@ -87,10 +74,6 @@ bool PmergeMe::_validate_input(char **argv)
 			++n;
 		}
 	}
-
-	// TODO int_max < argv[i]の場合
-
-
 	return (true);
 }
 
@@ -137,17 +120,7 @@ std::vector<int> PmergeMe::_makeJacobSeq(int n)
 
 std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size)
 {
-
 	std::vector<int> order;
-	int index = 0;
-
-	for (size_t i = 0;i < jacob_seq.size();i++)
-	{
-		if (jacob_seq[i] > size)
-			index = i;
-	}
-
-	// std::cout << "index " << index << " jacob_seq[index] " << jacob_seq[index] << std::endl;
 
 	if (size == 0)
 		return (order);
@@ -157,8 +130,8 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 		return (order);
 	}
 
-	int j = 0;
-	while (j < (int)jacob_seq.size())
+	size_t j = 0;
+	while (j < jacob_seq.size())
 	{
 		int x = jacob_seq[j];
 		if (x == 0)
@@ -168,7 +141,6 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 			continue ;
 		}
 
-		// ここがおかしい
 		int s = size - 1;
 		for (int k = x; k > jacob_seq[j - 1] && (int)order.size() < size; --k)
 		{
@@ -187,9 +159,6 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 	return (order);
 }
 
-// 余りがうまく挿入されない
-// オーダーインサートの数がlosersよりも短いときにバグる
-// オーダーインサートが悪いと思う　知らんけど
 std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 {
 	int size = vec.size();
@@ -342,8 +311,6 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 			insert_point =
 				std::lower_bound(sorted.begin(), serch_end, losers[order_insert[i]]);
 		}
-
-		// std::cout << "insert_point " << *insert_point << std::endl;
 
 		// bigの配列にsmallを挿入する
 		sorted.insert(insert_point, losers[order_insert[i]]);
