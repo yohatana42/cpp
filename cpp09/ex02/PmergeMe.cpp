@@ -202,27 +202,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	std::vector<int> order_insert = _mekeOrderInsert(jacob_array, losers.size());
 
 	// losersが全て挿入されるまでorder_insertの順番で入れる
-	for (size_t i = 0; i < losers.size(); i++)
-	{
-		// std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
-		int pairs_big = 0;
-		// losers[order_insert[i]]のペアのbigを探す
-		for (size_t j = 0; j < sorted_pairs.size(); j++)
-		{
-			// std::cout << "j " << j << std::endl;
-			if (losers[order_insert[i]] == sorted_pairs[j].small)
-			{
-				pairs_big = sorted_pairs[j].big;
-				// std::cout << "pairs_big " << pairs_big << std::endl;
-			}
-		}
-
-		std::vector<int>::iterator insert_point =
-			_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
-
-		// bigの配列にsmallを挿入する
-		sorted.insert(insert_point, losers[order_insert[i]]);
-	}
+	sorted = insert_losers_to_sorted(sorted, losers, sorted_pairs, order_insert);
 
 	// sorted check
 	// std::cout << "-----------" << std::endl;
@@ -326,4 +306,33 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 	}
 
 	return (insert_point);
+}
+
+std::vector<int>& PmergeMe::insert_losers_to_sorted(std::vector<int>& sorted,
+												std::vector<int>& losers,
+												std::vector<t_pair>& sorted_pairs,
+												std::vector<int>& order_insert)
+{
+	for (size_t i = 0; i < losers.size(); i++)
+	{
+		// std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
+		int pairs_big = 0;
+		// losers[order_insert[i]]のペアのbigを探す
+		for (size_t j = 0; j < sorted_pairs.size(); j++)
+		{
+			// std::cout << "j " << j << std::endl;
+			if (losers[order_insert[i]] == sorted_pairs[j].small)
+			{
+				pairs_big = sorted_pairs[j].big;
+				// std::cout << "pairs_big " << pairs_big << std::endl;
+			}
+		}
+
+		std::vector<int>::iterator insert_point =
+			_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
+
+		// bigの配列にsmallを挿入する
+		sorted.insert(insert_point, losers[order_insert[i]]);
+	}
+	return (sorted);
 }

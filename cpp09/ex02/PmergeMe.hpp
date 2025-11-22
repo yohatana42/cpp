@@ -39,6 +39,10 @@ class PmergeMe
 									std::vector<t_pair> pairs,
 									std::vector<int>& losers);
 		std::vector<int>::iterator _search_insert_point(int pairs_big, std::vector<int>& sorted, int target);
+		std::vector<int>& insert_losers_to_sorted(std::vector<int>& sorted,
+												std::vector<int>& losers,
+												std::vector<t_pair>& sorted_pairs,
+												std::vector<int>& order_insert);
 };
 
 #endif
