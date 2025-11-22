@@ -32,10 +32,9 @@ class PmergeMe
 		std::vector<int> _sort(std::vector<int> vec);
 		std::deque<int> _deq;
 		std::vector<int> _vec;
-		// void FordJohnsonSort(std::vector<int> vec);
-		// void binaryInsert(std::vector<int> vec, int num);
 		std::vector<int> _mekeOrderInsert(std::vector<int> jacob_seq, int size);
 		std::vector<int> _makeJacobSeq(int n);
+		std::vector<t_pair> _make_pairs(std::vector<int> vec);
 };
 
 #endif

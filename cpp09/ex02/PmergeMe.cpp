@@ -171,33 +171,7 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	std::vector<int> winners;
 	std::vector<int> losers;
 
-	// 二個ずつの塊にする
-	for (int i = 0; i < size; i = i + 2)
-	{
-		t_pair pair;
-		if (i == size - 1)
-		{
-			// 余りはとっておく（smallに入れたい）
-			pair.small = vec[i];
-			pair.big = 0;
-			// positive integerは０が入らないので0でよい
-			pairs.push_back(pair);
-		}
-		else
-		{
-			if (vec[i] > vec[i + 1])
-			{
-				pair.big = vec[i];
-				pair.small = vec[i + 1];
-			}
-			else
-			{
-				pair.big = vec[i + 1];
-				pair.small = vec[i];
-			}
-			pairs.push_back(pair);
-		}
-	}
+	pairs = _make_pairs(vec);
 	// pairs check
 	// for (int i = 0; i < (int)pairs.size();i++)
 	// {
@@ -317,4 +291,39 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	}
 
 	return (sorted);
+}
+
+std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
+{
+	std::vector<t_pair> pairs;
+
+	int size = vec.size();
+	// 二個ずつの塊にする
+	for (int i = 0; i < size; i = i + 2)
+	{
+		t_pair pair;
+		if (i == size - 1)
+		{
+			// 余りはとっておく（smallに入れたい）
+			pair.small = vec[i];
+			pair.big = 0;
+			// positive integerは０が入らないので0でよい
+			pairs.push_back(pair);
+		}
+		else
+		{
+			if (vec[i] > vec[i + 1])
+			{
+				pair.big = vec[i];
+				pair.small = vec[i + 1];
+			}
+			else
+			{
+				pair.big = vec[i + 1];
+				pair.small = vec[i];
+			}
+			pairs.push_back(pair);
+		}
+	}
+	return (pairs);
 }
