@@ -29,6 +29,12 @@ void PmergeMe::exec(char **argv)
 
 	_create_deque(argv);
 
+	std::cout << "input ";
+	for (int i =1; argv[i] !=NULL; i++)
+	{
+		std::cout << argv[i] << " ";
+	}
+	std::cout << std::endl;
 
 	// 計測開始
 	_create_vec(argv);
@@ -38,8 +44,8 @@ void PmergeMe::exec(char **argv)
 	// print
 	std::cout << "========= result ===========" << std::endl;
 	std::cout << "比較回数 " << comparison_count << std::endl;
-	std::cout << "ペアの比較回数" << pairs_count << std::endl;
-	std::cout << "lower_boundの呼び出し回数" << insert_count << std::endl;
+	// std::cout << "ペアの比較回数" << pairs_count << std::endl;
+	// std::cout << "lower_boundの呼び出し回数" << insert_count << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
 	{
 		std::cout << sorted[i] << " ";
@@ -162,6 +168,20 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 				order.push_back(k);
 			}
 		}
+
+		// int s = size - 1;
+		// for (int k = x; k > jacob_seq[j - 1] && (int)order.size() < size; --k)
+		// {
+		// 	if (size <= jacob_seq[j] && s > jacob_seq[j - 1])
+		// 	{
+		// 		order.push_back(s);
+		// 		s--;
+		// 	}
+		// 	else
+		// 	{
+		// 		order.push_back(k);
+		// 	}
+		// }
 		j++;
 	}
 	return (order);
@@ -280,6 +300,7 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 	// ペアが存在しない場合は全探索する
 	if (pairs_big == 0)
 	{
+		// 二分探索を自力で書く
 		insert_point =
 		std::lower_bound(sorted.begin(), sorted.end(), target, comp);
 	}
