@@ -1,6 +1,7 @@
 #include "PmergeMe.hpp"
 
 int comparison_count = 0;
+int pairs_count = 0;
 
 PmergeMe::PmergeMe() {}
 
@@ -36,6 +37,7 @@ void PmergeMe::exec(char **argv)
 	// print
 	std::cout << "========= result ===========" << std::endl;
 	std::cout << "比較回数 " << comparison_count << std::endl;
+	std::cout << "ペアの比較回数" << pairs_count << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
 	{
 		std::cout << sorted[i] << " ";
@@ -185,18 +187,11 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 	// ソートされた大の配列が帰ってくる
 	std::vector<int> sorted = _sort(winners);
 
-	// ここでソートされたbigのみの配列と最初に渡した配列の順番を合わせる
 	// ソートしたbigにあわせてsmallの配列を並び替える
 	std::vector<int> losers;
 	std::vector<t_pair> sorted_pairs = _make_sorted_pairs(sorted, pairs, losers);
 	if (remainder != 0)
 		losers.push_back(remainder);
-
-	// losers check
-	// for (size_t i = 0; i < losers.size();i++)
-	// {
-	// 	std::cout << "losers " << losers[i] << std::endl;
-	// }
 
 	// ヤコブスタール配列の作成
 	std::vector<int> jacob_array = _makeJacobSeq(size);
@@ -206,14 +201,6 @@ std::vector<int> PmergeMe::_sort(std::vector<int> vec)
 
 	// losersが全て挿入されるまでorder_insertの順番で入れる
 	sorted = _insert_losers_to_sorted(sorted, losers, sorted_pairs, order_insert);
-
-	// sorted check
-	// std::cout << "-----------" << std::endl;
-	// for (int i = 0; i < (int)sorted.size();i++)
-	// {
-	// 	std::cout << "i :" << i << " sorted :" << sorted[i] << std::endl;
-	// }
-	// std::cout << "-----------" << std::endl;
 	return (sorted);
 }
 
@@ -222,7 +209,6 @@ std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
 	std::vector<t_pair> pairs;
 
 	int size = vec.size();
-	// 二個ずつの塊にする
 	for (int i = 0; i < size; i = i + 2)
 	{
 		t_pair pair;
@@ -234,30 +220,21 @@ std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
 		}
 		else
 		{
+			++comparison_count;
+			++pairs_count;
 			if (vec[i] > vec[i + 1])
 			{
-				++comparison_count;
 				pair.big = vec[i];
 				pair.small = vec[i + 1];
 			}
 			else
 			{
-				++comparison_count;
 				pair.big = vec[i + 1];
 				pair.small = vec[i];
 			}
 			pairs.push_back(pair);
 		}
 	}
-
-	// pairs check
-	// for (int i = 0; i < (int)pairs.size();i++)
-	// {
-	// 	std::cout << "======" << std::endl;
-	// 	std::cout << "big " << pairs[i].big << std::endl;
-	// 	std::cout << "samll " << pairs[i].small << std::endl;
-	// }
-	// std::cout << "======" << std::endl;
 	return (pairs);
 }
 
@@ -277,14 +254,18 @@ std::vector<t_pair> PmergeMe::_make_sorted_pairs(std::vector<int> sorted,
 			{
 				sorted_pairs.push_back(pairs[j]);
 				losers.push_back(pairs[j].small);
-
-				// check
-				// std::cout << "big " << pairs[j].big << std::endl;
-				// std::cout << "small " << pairs[j].small << std::endl;
 			}
 			j++;
 		}
 	}
+
+	// std::cout << "-- losers --" << std::endl;
+	// for (size_t i = 0; i < losers.size(); i++)
+	// {
+	// 	std::cout << losers[i] << " ";
+	// }
+	// std::cout << std::endl;
+
 	return (sorted_pairs);
 }
 
@@ -297,12 +278,8 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 	// ペアが存在しない場合は全探索する
 	if (pairs_big == 0)
 	{
-		// insert_point =
-		// std::lower_bound(sorted.begin(), sorted.end(), target);
 		insert_point =
 		std::lower_bound(sorted.begin(), sorted.end(), target, comp);
-		// std::cout << "--- target ---" << target << std::endl;
-		std::cout << "===== 比較回数 ===== " << insert_point - sorted.begin() << std::endl;
 	}
 	else
 	{
@@ -310,10 +287,8 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
 
 		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
-		// insert_point =
-		// 	std::lower_bound(sorted.begin(), serch_end, target);
 		insert_point =
-			std::lower_bound(sorted.begin(), serch_end, target, comp);
+			std::lower_bound(sorted.begin(), serch_end -1, target, comp);
 	}
 
 	return (insert_point);
@@ -326,21 +301,26 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 {
 	for (size_t i = 0; i < losers.size(); i++)
 	{
-		// std::cout << "i " << i << " losers[i] " << losers[i] << " losers[order_insert[i]] "<< losers[order_insert[i]]<< std::endl;
+
+		// std::cout << "sorted :";
+		// for (size_t k = 0; k < sorted.size();k++)
+		// {
+		// 	std::cout << sorted[k] << " ";
+		// }
+		// std::cout << std::endl;
+
 		int pairs_big = 0;
 		// losers[order_insert[i]]のペアのbigを探す
 		for (size_t j = 0; j < sorted_pairs.size(); j++)
 		{
-			// std::cout << "j " << j << std::endl;
 			if (losers[order_insert[i]] == sorted_pairs[j].small)
 			{
 				pairs_big = sorted_pairs[j].big;
-				// std::cout << "pairs_big " << pairs_big << std::endl;
 			}
 		}
 
 		std::vector<int>::iterator insert_point =
-			_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
+				_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
 
 		// bigの配列にsmallを挿入する
 		sorted.insert(insert_point, losers[order_insert[i]]);
@@ -350,16 +330,7 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 
 bool PmergeMe::comp(int a, int target)
 {
-	std::cout << "==== comp! ====" << std::endl;
-	std::cout << "a: " << a << " target: " << target << std::endl;
 	++comparison_count;
 	return a < target;
 }
 
-// bool comp(int a, int target)
-// {
-// 	std::cout << "==== comp! ====" << std::endl;
-// 	std::cout << "a: " << a << " target: " << target << std::endl;
-// 	// ここでカウントするのはわかる
-// 	return a < target;
-// }
