@@ -2,6 +2,7 @@
 
 int comparison_count = 0;
 int pairs_count = 0;
+int insert_count = 0;
 
 PmergeMe::PmergeMe() {}
 
@@ -38,6 +39,7 @@ void PmergeMe::exec(char **argv)
 	std::cout << "========= result ===========" << std::endl;
 	std::cout << "比較回数 " << comparison_count << std::endl;
 	std::cout << "ペアの比較回数" << pairs_count << std::endl;
+	std::cout << "lower_boundの呼び出し回数" << insert_count << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
 	{
 		std::cout << sorted[i] << " ";
@@ -286,6 +288,8 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 		// ペアのbigをもとにsortedのbigのイテレータを取得
 		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
 
+		// std::cout << pairs_big << " " << *serch_end << std::endl;
+
 		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
 		insert_point =
 			std::lower_bound(sorted.begin(), serch_end -1, target, comp);
@@ -331,6 +335,7 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 bool PmergeMe::comp(int a, int target)
 {
 	++comparison_count;
+	++insert_count;
 	return a < target;
 }
 
