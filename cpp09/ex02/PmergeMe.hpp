@@ -9,8 +9,6 @@
 #include <algorithm>
 #include <limits>
 
-// あまりの場合0埋めするとまずいのでポインタにするべきか？
-// 余りフラグを使うか？（big参照しないように）
 typedef struct s_pair
 {
 	int big;
@@ -25,6 +23,11 @@ class PmergeMe
 		PmergeMe& operator=(const PmergeMe& src);
 		~PmergeMe();
 		void exec(char **argv);
+		// bool operator()(int a, int target)
+		// {
+		// 	_count++;
+		// 	return (a < target);
+		// }
 	private:
 		bool _validate_input(char **argv);
 		void _create_deque(char **argv);
@@ -39,10 +42,15 @@ class PmergeMe
 									std::vector<t_pair> pairs,
 									std::vector<int>& losers);
 		std::vector<int>::iterator _search_insert_point(int pairs_big, std::vector<int>& sorted, int target);
-		std::vector<int>& insert_losers_to_sorted(std::vector<int>& sorted,
+		std::vector<int>& _insert_losers_to_sorted(std::vector<int>& sorted,
 												std::vector<int>& losers,
 												std::vector<t_pair>& sorted_pairs,
 												std::vector<int>& order_insert);
+		static bool comp(int a, int b);
+		// static int _num_of_compare;
+		// int _count;
 };
+
+// bool comp(int a, int b);
 
 #endif
