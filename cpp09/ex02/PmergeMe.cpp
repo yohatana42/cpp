@@ -74,11 +74,9 @@ void PmergeMe::exec(char **argv)
 
 	std::cout << "--- times ---" << std::endl;
 	std::cout << "vector microseconds :" << elapsed_microseconds << std::endl;
-	std::cout << "deque microseconds :" << elapsed_microseconds_deq << std::endl;
+	std::cout << "deque  microseconds :" << elapsed_microseconds_deq << std::endl;
 	std::cout << "compare count : " << comparison_count << std::endl;
-
-	// dequeとvectorで秒数を比較すると違って嬉しいねーということらしい
-	// <sys/time.h> の gettimeofday() を使う
+	std::cout << "compare count_deq : " << comparison_count_deq << std::endl;
 
 }
 
