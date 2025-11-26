@@ -1,8 +1,7 @@
 #include "PmergeMe.hpp"
 
 int comparison_count = 0;
-int pairs_count = 0;
-int insert_count = 0;
+int comparison_count_deq = 0;
 
 PmergeMe::PmergeMe() {}
 
@@ -26,32 +25,57 @@ void PmergeMe::exec(char **argv)
 		std::cerr << "Error" << std::endl;
 		return ;
 	}
-
-	_create_deque(argv);
-
-	std::cout << "input ";
+	std::cout << "=========== input ===========" << std::endl;
 	for (int i =1; argv[i] !=NULL; i++)
 	{
+		if (_print_max < i)
+		{
+			std::cout << "[...]";
+			break ;
+		}
 		std::cout << argv[i] << " ";
 	}
 	std::cout << std::endl;
 
-	// 計測開始
+	struct timeval start_time_deq;
+    struct timeval end_time_deq;
+	gettimeofday(&start_time_deq, NULL);
+	_create_deque(argv);
+	std::deque<int> sorted_deq = _sort_deq(_deq);
+	gettimeofday(&end_time_deq, NULL);
+	long long sec_diff_deq = end_time_deq.tv_sec - start_time_deq.tv_sec;
+	long long usec_diff_deq = end_time_deq.tv_usec - start_time_deq.tv_usec;
+	long long elapsed_microseconds_deq = sec_diff_deq * 1000000LL + usec_diff_deq;
+
+	struct timeval start_time_vec;
+    struct timeval end_time_vec;
+	gettimeofday(&start_time_vec, NULL);
 	_create_vec(argv);
 	std::vector<int> sorted = _sort(_vec);
-	// 計測終了
+	gettimeofday(&end_time_vec, NULL);
+
+	long long sec_diff = end_time_vec.tv_sec - start_time_vec.tv_sec;
+	long long usec_diff = end_time_vec.tv_usec - start_time_vec.tv_usec;
+	long long elapsed_microseconds = sec_diff * 1000000LL + usec_diff;
 
 	// print
 	std::cout << "========= result ===========" << std::endl;
-	std::cout << "比較回数 " << comparison_count << std::endl;
-	// std::cout << "ペアの比較回数" << pairs_count << std::endl;
-	// std::cout << "lower_boundの呼び出し回数" << insert_count << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
 	{
+		if (_print_max < i)
+		{
+			std::cout << "[...]" << std::endl;
+			break ;
+		}
 		std::cout << sorted[i] << " ";
 		if (i == (int)sorted.size() - 1)
 			std::cout << std::endl;
 	}
+
+	std::cout << "--- times ---" << std::endl;
+	std::cout << "vector microseconds :" << elapsed_microseconds << std::endl;
+	std::cout << "deque microseconds :" << elapsed_microseconds_deq << std::endl;
+	std::cout << "compare count : " << comparison_count << std::endl;
 
 	// dequeとvectorで秒数を比較すると違って嬉しいねーということらしい
 	// <sys/time.h> の gettimeofday() を使う
@@ -110,6 +134,9 @@ void PmergeMe::_create_vec(char **argv)
 	}
 }
 
+/*
+ vector
+*/
 std::vector<int> PmergeMe::_makeJacobSeq(int n)
 {
 	std::vector<int> seq;
@@ -228,7 +255,6 @@ std::vector<t_pair> PmergeMe::_make_pairs(std::vector<int> vec)
 		else
 		{
 			++comparison_count;
-			++pairs_count;
 			if (vec[i] > vec[i + 1])
 			{
 				pair.big = vec[i];
@@ -325,7 +351,6 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 bool PmergeMe::comp(int a, int target)
 {
 	++comparison_count;
-	++insert_count;
 	return a < target;
 }
 
@@ -342,6 +367,241 @@ int PmergeMe::_my_lower_bound(int begin,
 	{
 		mid = left + (right - left) / 2;
 		++comparison_count;
+		if (sorted[mid] < target)
+			left = mid;
+		else
+			right = mid;
+	}
+	return (right);
+}
+
+/*
+ deque
+*/
+
+std::deque<int> PmergeMe::_makeJacobSeq_deq(int n)
+{
+	std::deque<int> seq;
+
+	// seq.reserve(n);
+	if (n <= 0)
+		return (seq);
+	seq.push_back(0);
+	if (n == 1)
+		return (seq);
+
+	seq.push_back(1);
+	for (int i = 2; i < n; ++i)
+	{
+		int next = seq[i - 1] + 2 * seq[i - 2];
+		if (next > n)
+			break;
+		seq.push_back(next);
+	}
+	return (seq);
+}
+
+std::deque<int> PmergeMe::_mekeOrderInsert_deq(std::deque<int> jacob_seq, int size)
+{
+	std::deque<int> order;
+
+	if (size == 0)
+		return (order);
+	if (size == 1)
+	{
+		order.push_back(0);
+		return (order);
+	}
+
+	size_t j = 1;
+	int begin = 0;
+	while (j < jacob_seq.size())
+	{
+		int end = jacob_seq[j];
+
+		if (size < end)
+		{
+			break ;
+		}
+
+		while (begin < end)
+		{
+			order.push_back(end - 1);
+			--end;
+		}
+		begin = jacob_seq[j];
+		j++;
+	}
+	while (jacob_seq[j -1] < size)
+	{
+		order.push_back(size - 1);
+		--size;
+	}
+	return (order);
+}
+
+std::deque<int> PmergeMe::_sort_deq(std::deque<int> deq)
+{
+	int size = deq.size();
+	if (size == 1)
+		return (deq);
+
+	std::deque<t_pair> pairs = _make_pairs_deq(deq);
+
+	// bigのみを取り出す
+	int remainder = 0;
+	std::deque<int> winners;
+	for (int i = 0; i < (int)pairs.size();i++)
+	{
+		if (pairs[i].big != 0)
+			winners.push_back(pairs[i].big);
+		else
+			remainder = pairs[i].small;
+	}
+
+	// ソートされた大の配列が帰ってくる
+	std::deque<int> sorted = _sort_deq(winners);
+
+	// ソートしたbigにあわせてsmallの配列を並び替える
+	std::deque<int> losers;
+	std::deque<t_pair> sorted_pairs = _make_sorted_pairs_deq(sorted, pairs, losers);
+	if (remainder != 0)
+		losers.push_back(remainder);
+
+	// ヤコブスタール配列の作成
+	std::deque<int> jacob_array = _makeJacobSeq_deq(size);
+
+	// small配列の挿入順を決める
+	std::deque<int> order_insert = _mekeOrderInsert_deq(jacob_array, losers.size());
+
+	// losersが全て挿入されるまでorder_insertの順番で入れる
+	sorted = _insert_losers_to_sorted_deq(sorted, losers, sorted_pairs, order_insert);
+	return (sorted);
+}
+
+std::deque<t_pair> PmergeMe::_make_pairs_deq(std::deque<int> vec)
+{
+	std::deque<t_pair> pairs;
+
+	int size = vec.size();
+	for (int i = 0; i < size; i = i + 2)
+	{
+		t_pair pair;
+		if (i == size - 1)
+		{
+			pair.small = vec[i];
+			pair.big = 0;
+			pairs.push_back(pair);
+		}
+		else
+		{
+			++comparison_count_deq;
+			if (vec[i] > vec[i + 1])
+			{
+				pair.big = vec[i];
+				pair.small = vec[i + 1];
+			}
+			else
+			{
+				pair.big = vec[i + 1];
+				pair.small = vec[i];
+			}
+			pairs.push_back(pair);
+		}
+	}
+	return (pairs);
+}
+
+std::deque<t_pair> PmergeMe::_make_sorted_pairs_deq(std::deque<int> sorted,
+									std::deque<t_pair> pairs,
+									std::deque<int>& losers)
+{
+	std::deque<t_pair> sorted_pairs;
+
+	int j;
+	for (int i = 0; i < (int)sorted.size();i++)
+	{
+		j = 0;
+		while (j < (int)pairs.size())
+		{
+			if (sorted[i] == pairs[j].big)
+			{
+				sorted_pairs.push_back(pairs[j]);
+				losers.push_back(pairs[j].small);
+			}
+			j++;
+		}
+	}
+
+	return (sorted_pairs);
+}
+
+std::deque<int>::iterator PmergeMe::_search_insert_point_deq(int pairs_big,
+														std::deque<int>& sorted,
+														int target)
+{
+	std::deque<int>::iterator insert_point;
+
+	// ペアが存在しない場合は全探索する
+	int index = 0;
+	if (pairs_big == 0)
+	{
+		index =
+			_my_lower_bound_deq(0, sorted.size() -1, sorted, target);
+	}
+	else
+	{
+		// ペアのbigをもとにsortedのbigのイテレータを取得
+		std::deque<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
+		int end = std::distance(sorted.begin(), serch_end);
+		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
+		index =
+			_my_lower_bound_deq(0, end -1, sorted, target);
+		}
+	insert_point = sorted.begin() + index;
+	return (insert_point);
+}
+
+std::deque<int>& PmergeMe::_insert_losers_to_sorted_deq(std::deque<int>& sorted,
+												std::deque<int>& losers,
+												std::deque<t_pair>& sorted_pairs,
+												std::deque<int>& order_insert)
+{
+	for (size_t i = 0; i < losers.size(); i++)
+	{
+
+		int pairs_big = 0;
+		// losers[order_insert[i]]のペアのbigを探す
+		for (size_t j = 0; j < sorted_pairs.size(); j++)
+		{
+			if (losers[order_insert[i]] == sorted_pairs[j].small)
+			{
+				pairs_big = sorted_pairs[j].big;
+			}
+		}
+
+		std::deque<int>::iterator insert_point =
+				_search_insert_point_deq(pairs_big, sorted, losers[order_insert[i]]);
+
+		// bigの配列にsmallを挿入する
+		sorted.insert(insert_point, losers[order_insert[i]]);
+	}
+	return (sorted);
+}
+
+int PmergeMe::_my_lower_bound_deq(int begin,
+							int end,
+							std::deque<int> sorted,
+							int target)
+{
+
+	int left = begin - 1;
+	int right = end + 1;
+	int mid;
+	while (right - left > 1)
+	{
+		mid = left + (right - left) / 2;
+		++comparison_count_deq;
 		if (sorted[mid] < target)
 			left = mid;
 		else

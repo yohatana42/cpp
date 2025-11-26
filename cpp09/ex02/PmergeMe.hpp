@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <limits>
+#include <sys/time.h>
 
 typedef struct s_pair
 {
@@ -23,15 +24,12 @@ class PmergeMe
 		PmergeMe& operator=(const PmergeMe& src);
 		~PmergeMe();
 		void exec(char **argv);
-		// bool operator()(int a, int target)
-		// {
-		// 	_count++;
-		// 	return (a < target);
-		// }
 	private:
 		bool _validate_input(char **argv);
 		void _create_deque(char **argv);
 		void _create_vec(char **argv);
+
+		// vector
 		std::vector<int> _sort(std::vector<int> vec);
 		std::deque<int> _deq;
 		std::vector<int> _vec;
@@ -51,13 +49,25 @@ class PmergeMe
 							int end,
 							std::vector<int> sorted,
 							int target);
-		// int my_lower_bound(std::vector<int>::iterator begin,
-		// 					std::vector<int>::iterator end,
-		// 					int target);
-		// static int _num_of_compare;
-		// int _count;
-};
 
-// bool comp(int a, int b);
+		// deque
+		std::deque<int> _sort_deq(std::deque<int> deq);
+		std::deque<int> _mekeOrderInsert_deq(std::deque<int> jacob_deq, int size);
+		std::deque<int> _makeJacobSeq_deq(int n);
+		std::deque<t_pair> _make_pairs_deq(std::deque<int> vec);
+		std::deque<t_pair> _make_sorted_pairs_deq(std::deque<int> sorted,
+									std::deque<t_pair> pairs,
+									std::deque<int>& losers);
+		std::deque<int>::iterator _search_insert_point_deq(int pairs_big, std::deque<int>& sorted, int target);
+		std::deque<int>& _insert_losers_to_sorted_deq(std::deque<int>& sorted,
+												std::deque<int>& losers,
+												std::deque<t_pair>& sorted_pairs,
+												std::deque<int>& order_insert);
+		int _my_lower_bound_deq(int start,
+							int end,
+							std::deque<int> sorted,
+							int target);
+		static const int _print_max = 25;
+};
 
 #endif
