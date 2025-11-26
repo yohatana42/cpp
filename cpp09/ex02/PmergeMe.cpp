@@ -25,27 +25,16 @@ void PmergeMe::exec(char **argv)
 		std::cerr << "Error" << std::endl;
 		return ;
 	}
-	std::cout << "=========== input ===========" << std::endl;
-	for (int i =1; argv[i] !=NULL; i++)
-	{
-		if (_print_max < i)
-		{
-			std::cout << "[...]";
-			break ;
-		}
-		std::cout << argv[i] << " ";
-	}
-	std::cout << std::endl;
 
-	struct timeval start_time_deq;
-    struct timeval end_time_deq;
-	gettimeofday(&start_time_deq, NULL);
+	struct timeval start_deq;
+    struct timeval end_deq;
+	gettimeofday(&start_deq, NULL);
 	_create_deque(argv);
 	std::deque<int> sorted_deq = _sort_deq(_deq);
-	gettimeofday(&end_time_deq, NULL);
-	long long sec_diff_deq = end_time_deq.tv_sec - start_time_deq.tv_sec;
-	long long usec_diff_deq = end_time_deq.tv_usec - start_time_deq.tv_usec;
-	long long elapsed_microseconds_deq = sec_diff_deq * 1000000LL + usec_diff_deq;
+	gettimeofday(&end_deq, NULL);
+	long long sec_deq = end_deq.tv_sec - start_deq.tv_sec;
+	long long usec_deq = end_deq.tv_usec - start_deq.tv_usec;
+	long long microseconds_deq = sec_deq * 1000000LL + usec_deq;
 
 	struct timeval start_time_vec;
     struct timeval end_time_vec;
@@ -59,6 +48,17 @@ void PmergeMe::exec(char **argv)
 	long long elapsed_microseconds = sec_diff * 1000000LL + usec_diff;
 
 	// print
+	std::cout << "=========== input ===========" << std::endl;
+	for (int i =1; argv[i] !=NULL; i++)
+	{
+		if (_print_max < i)
+		{
+			std::cout << "[...]";
+			break ;
+		}
+		std::cout << argv[i] << " ";
+	}
+	std::cout << std::endl;
 	std::cout << "========= result ===========" << std::endl;
 	for (int i = 0; i < (int)sorted.size();i++)
 	{
@@ -74,7 +74,7 @@ void PmergeMe::exec(char **argv)
 
 	std::cout << "--- times ---" << std::endl;
 	std::cout << "vector microseconds :" << elapsed_microseconds << std::endl;
-	std::cout << "deque  microseconds :" << elapsed_microseconds_deq << std::endl;
+	std::cout << "deque  microseconds :" << microseconds_deq << std::endl;
 	std::cout << "compare count : " << comparison_count << std::endl;
 	std::cout << "compare count_deq : " << comparison_count_deq << std::endl;
 
