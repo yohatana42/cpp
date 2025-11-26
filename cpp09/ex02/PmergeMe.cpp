@@ -136,8 +136,6 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 {
 	std::vector<int> order;
 
-	// std::cout << "_mekeOrderInsert size " << size << std::endl;
-
 	if (size == 0)
 		return (order);
 	if (size == 1)
@@ -150,11 +148,7 @@ std::vector<int> PmergeMe::_mekeOrderInsert(std::vector<int> jacob_seq, int size
 	int begin = 0;
 	while (j < jacob_seq.size())
 	{
-		// ブロックの範囲を決める
-		// 1 [2 3] [4 5] [6 7 ... 11]...
 		int end = jacob_seq[j];
-		// std::cout << "j " << j;
-		// std::cout << " end " << end << std::endl;
 
 		if (size < end)
 		{
@@ -272,13 +266,6 @@ std::vector<t_pair> PmergeMe::_make_sorted_pairs(std::vector<int> sorted,
 		}
 	}
 
-	// std::cout << "-- losers --" << std::endl;
-	// for (size_t i = 0; i < losers.size(); i++)
-	// {
-	// 	std::cout << losers[i] << " ";
-	// }
-	// std::cout << std::endl;
-
 	return (sorted_pairs);
 }
 
@@ -292,29 +279,17 @@ std::vector<int>::iterator PmergeMe::_search_insert_point(int pairs_big,
 	int index = 0;
 	if (pairs_big == 0)
 	{
-		// 二分探索を自力で書く
-		// insert_point =
-		// _my_lower_bound(sorted.begin(), sorted.end(), target);
 		index =
 			_my_lower_bound(0, sorted.size() -1, sorted, target);
-
-		// insert_point =
-		// std::lower_bound(sorted.begin(), sorted.end(), target, comp);
 	}
 	else
 	{
 		// ペアのbigをもとにsortedのbigのイテレータを取得
 		std::vector<int>::iterator serch_end = std::find(sorted.begin(), sorted.end(), pairs_big);
-
-		// std::cout << pairs_big << " " << *serch_end << std::endl;
-
 		int end = std::distance(sorted.begin(), serch_end);
 		// sorted.begin()〜ペアのbigまでのイテレータまでを検索範囲とする
 		index =
 			_my_lower_bound(0, end -1, sorted, target);
-
-			// insert_point =
-			// 	std::lower_bound(sorted.begin(), serch_end -1, target, comp);
 		}
 	insert_point = sorted.begin() + index;
 	return (insert_point);
@@ -328,19 +303,6 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 	for (size_t i = 0; i < losers.size(); i++)
 	{
 
-		// std::cout << "order_insert :";
-		// for (size_t k = 0; k < order_insert.size();k++)
-		// {
-		// 	std::cout << order_insert[k] << " ";
-		// }
-		// std::cout << std::endl;
-
-		// if (i == 0)
-		// {
-		// 	sorted.insert(sorted.begin(), losers[order_insert[i]]);
-		// 	continue ;
-		// }
-
 		int pairs_big = 0;
 		// losers[order_insert[i]]のペアのbigを探す
 		for (size_t j = 0; j < sorted_pairs.size(); j++)
@@ -350,12 +312,6 @@ std::vector<int>& PmergeMe::_insert_losers_to_sorted(std::vector<int>& sorted,
 				pairs_big = sorted_pairs[j].big;
 			}
 		}
-		std::cout << "===== pairs_big " << pairs_big << std::endl;
-		for (size_t j = 0; j < sorted.size(); j++)
-		{
-			std::cout << sorted[j];
-		}
-		std::cout << std::endl;
 
 		std::vector<int>::iterator insert_point =
 				_search_insert_point(pairs_big, sorted, losers[order_insert[i]]);
@@ -379,28 +335,17 @@ int PmergeMe::_my_lower_bound(int begin,
 							int target)
 {
 
-	std::cout << "~~~ _my_lower_bound ~~~" << std::endl;
-	std::cout << "target " << target << std::endl;
-	// コレを二分探索にしよう！
-	// 真ん中を決める
-	// なんかこいつおかしいな　1個の条件で決まってる気配ある
-
-	std::cout << "begin " << begin << " end " << end << std::endl;
 	int left = begin - 1;
 	int right = end + 1;
 	int mid;
 	while (right - left > 1)
 	{
-		std::cout << "left " << left << " right " << right << std::endl;
 		mid = left + (right - left) / 2;
-		std::cout << "mid " << mid << " "<<sorted[mid] << " "<< target <<std::endl;
 		++comparison_count;
 		if (sorted[mid] < target)
 			left = mid;
 		else
 			right = mid;
 	}
-	std::cout << "right " << right  << " left " << left<< std::endl;
-	std::cout << "~~~~~~~~~~~~~~~~~~~" << std::endl;
 	return (right);
 }
