@@ -47,6 +47,13 @@ class PmergeMe
 												std::vector<t_pair>& sorted_pairs,
 												std::vector<int>& order_insert);
 		static bool comp(int a, int b);
+		int _my_lower_bound(int start,
+							int end,
+							std::vector<int> sorted,
+							int target);
+		// int my_lower_bound(std::vector<int>::iterator begin,
+		// 					std::vector<int>::iterator end,
+		// 					int target);
 		// static int _num_of_compare;
 		// int _count;
 };
