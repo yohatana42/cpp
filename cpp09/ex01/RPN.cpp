@@ -77,5 +77,40 @@ bool RPN::validate_input(std::string input)
 		else
 			return (false);
 	}
+
+	int index = 0;
+	bool is_digit = false;
+	bool is_symbol = false;
+	for (int i = 0; i < (int)input.size();i++)
+	{
+		if (input[i] == ' ')
+			continue ;
+		else
+		{
+			if ((index == 0 || index == 1) && !isdigit(input[i]))
+				return (false);
+			else
+			{
+				is_digit = true;
+				++index;
+				continue ;
+			}
+
+			if (isdigit((input[i]) && !is_digit))
+			{
+				is_digit = true;
+				is_symbol = false;
+			}
+			else if ((input[i] == '+' || input[i] == '-'|| input[i] == '/'|| input[i] == '*')
+					&& !is_symbol)
+			{
+				is_digit = false;
+				is_symbol = true;
+			}
+			else
+				return (false);
+			++index;
+		}
+	}
 	return (true);
 }
